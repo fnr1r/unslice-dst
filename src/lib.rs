@@ -12,6 +12,15 @@
 #![warn(clippy::missing_const_for_fn)]
 #![no_std]
 
+pub use self::cast::DstCast;
+
+pub mod cast;
+
+/// Just a type alias for a slice of units.
+///
+/// It's assumed to always be of size 0.
+pub type AnyDst = [()];
+
 #[allow(
     missing_docs,
     clippy::missing_const_for_fn,
