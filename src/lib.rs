@@ -22,6 +22,7 @@ pub use self::{
     cast::DstCast,
     fat_ptr::{dst_addr, dst_data, dst_len},
     layout::DstLayout,
+    structs::{MockDst, SliceWithHeader},
 };
 
 pub mod allocation;
