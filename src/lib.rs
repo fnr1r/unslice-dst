@@ -1,4 +1,5 @@
 #![doc = include_str!("../README.md")]
+#![deny(unsafe_op_in_unsafe_fn)]
 #![no_std]
 
 pub fn add(left: u64, right: u64) -> u64 {
