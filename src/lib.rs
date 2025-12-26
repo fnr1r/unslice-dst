@@ -22,6 +22,7 @@ pub use self::{
     cast::DstCast,
     fat_ptr::{dst_addr, dst_data, dst_len},
     layout::DstLayout,
+    structs::SliceWithHeader,
 };
 
 pub mod allocation;
@@ -32,6 +33,7 @@ pub mod container;
 mod container;
 pub mod fat_ptr;
 pub mod layout;
+pub mod structs;
 pub mod uninit;
 mod utils;
 
