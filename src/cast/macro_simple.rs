@@ -22,6 +22,8 @@ macro_rules! dst_cast_impl {
         unsafe impl $(<$($generic_name),*>)? $crate::DstCast for $type
         $(where $($rest)+)?
         {
+            const POINTER_SIZE_MATCHES_SLICE: $crate::cast::sealed::Sealed<Self> =
+                $crate::cast::sealed::assert_fat_ptr_matches_size_dst();
             #[inline(always)]
             fn cast_into_slice<U>(this: *const Self) -> *const [U] {
                 this as _

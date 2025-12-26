@@ -1,3 +1,5 @@
+use super::sealed::Sealed;
+
 /// This trait signifies that Self if a DST that is cast-able to a slice.
 ///
 /// Rust only allows casting a fat pointer if both types have the same metadata.
@@ -25,6 +27,11 @@
 /// [`dst_cast_impl`]: crate::dst_cast_impl
 /// [pointer-to-pointer casts]: <https://doc.rust-lang.org/reference/expressions/operator-expr.html#r-expr.as.pointer>
 pub unsafe trait DstCast {
+    /// Sealed type.
+    ///
+    /// For more info, enable feature `casting_unseal`.
+    const POINTER_SIZE_MATCHES_SLICE: Sealed<Self>;
+
     /// Cast a const pointer to a slice-like DST to a slice
     ///
     /// See [`DstCast`] for more info

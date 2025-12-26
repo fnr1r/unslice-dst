@@ -9,3 +9,5 @@ mod impls;
 mod macro_simple;
 #[cfg(feature = "cast_macro_tt_muncher")]
 mod macro_tt_muncher;
+#[cfg_attr(not(feature = "cast_unseal"), doc(hidden))]
+pub mod sealed;

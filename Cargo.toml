@@ -2,8 +2,8 @@
 name = "unslice-dst"
 version = "0.1.0"
 authors = ["fnrir"]
-edition = "2018"
-rust-version = "1.54"
+edition = "2021"
+rust-version = "1.57"
 readme = "README.md"
 
 [dependencies]
@@ -13,4 +13,5 @@ default = ["cast_macro_tt_muncher", "std"]
 cast_impl_core_cstr = []
 cast_impl_std_cstr = ["std"]
 cast_macro_tt_muncher = []
+cast_unseal = []
 std = ["cast_macro_tt_muncher"]
