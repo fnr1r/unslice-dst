@@ -11,3 +11,6 @@ mod macro_simple;
 mod macro_tt_muncher;
 #[cfg_attr(not(feature = "cast_unseal"), doc(hidden))]
 pub mod sealed;
+
+#[cfg(test)]
+mod tests;
