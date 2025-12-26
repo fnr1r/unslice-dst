@@ -21,6 +21,7 @@ pub use self::{
     cast::DstCast,
     fat_ptr::{dst_addr, dst_data, dst_len},
     layout::DstLayout,
+    structs::SliceWithHeader,
 };
 
 pub mod allocation;
@@ -30,6 +31,7 @@ pub mod container;
 #[cfg(not(feature = "container_unseal"))]
 mod container;
 pub mod fat_ptr;
+pub mod structs;
 pub mod layout;
 mod utils;
 
