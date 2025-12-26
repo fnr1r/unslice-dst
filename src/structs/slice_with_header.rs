@@ -108,3 +108,18 @@ unsafe impl<H, I> SliceDstSaferInit for SliceWithHeader<H, I> {
         Self::layout_pack(dst_len(this.as_ptr())).1[1]
     }
 }
+
+#[cfg(all(test, miri, feature = "std"))]
+mod tests {
+    use std::panic::catch_unwind;
+
+    use super::*;
+    use crate::uninit::UninitMut;
+
+    #[test]
+    fn leak_test() {
+        let init = |_: UninitMut<'_, [u8]>| panic!();
+        let _ = catch_unwind(|| unsafe { Box::new_slice_dst(32, init) });
+        // MIRI should catch any leaks here
+    }
+}
