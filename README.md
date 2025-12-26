@@ -12,3 +12,6 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
   WARNING: The repr of `CStr` is not guaranteed! See the official [`core`] docs
   for more info.
 - `cast_macro_tt` - uses a more flexible TT muncher macro
+- `std` - Rust `std` crate support, featuring:
+  - impls of `DstCast` for `std` slice-like types
+  - depends on `cast_macro_tt` because I'm lazy

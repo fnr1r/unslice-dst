@@ -10,7 +10,7 @@
 #![warn(clippy::std_instead_of_alloc)]
 #![warn(clippy::std_instead_of_core)]
 #![warn(clippy::missing_const_for_fn)]
-#![no_std]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 pub use self::cast::DstCast;
 
