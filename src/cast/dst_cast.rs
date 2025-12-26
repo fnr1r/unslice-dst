@@ -1,5 +1,3 @@
-//! Support for casting slice-like DSTs
-
 /// This trait signifies that Self if a DST that is cast-able to a slice.
 ///
 /// Rust only allows casting a fat pointer if both types have the same metadata.
