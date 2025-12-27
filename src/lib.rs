@@ -12,9 +12,13 @@
 #![warn(clippy::missing_const_for_fn)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
-pub use self::cast::DstCast;
+pub use self::{
+    cast::DstCast,
+    fat_ptr::{dst_addr, dst_data, dst_len},
+};
 
 pub mod cast;
+pub mod fat_ptr;
 mod utils;
 
 /// Just a type alias for a slice of units.
