@@ -32,6 +32,7 @@ pub mod container;
 mod container;
 pub mod fat_ptr;
 pub mod layout;
+pub mod structs;
 pub mod uninit;
 mod utils;
 
