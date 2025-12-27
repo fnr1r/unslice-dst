@@ -19,4 +19,5 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
   compatible.
 - `std` - Rust `std` crate support, featuring:
   - impls of `DstCast` for `std` slice-like types
+  - impls of `DstLayout` for `std` (only on Unix tho)
   - depends on `cast_macro_tt` because I'm lazy

@@ -15,13 +15,23 @@
 pub use self::{
     cast::DstCast,
     fat_ptr::{dst_addr, dst_data, dst_len},
+    layout::DstLayout,
 };
 
 pub mod cast;
 pub mod fat_ptr;
+pub mod layout;
 mod utils;
 
 /// Just a type alias for a slice of units.
 ///
 /// It's assumed to always be of size 0.
 pub type AnyDst = [()];
+
+/// Trait alias for every slice-like DST
+///
+/// Automatically implemented for every type which implements [DstCast] and
+/// [DstLayout]
+pub trait SliceDst: DstCast + DstLayout {}
+
+impl<T: ?Sized + DstCast + DstLayout> SliceDst for T {}
