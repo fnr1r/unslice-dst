@@ -5,6 +5,9 @@ use core::{
     ptr::NonNull,
 };
 
+#[cfg(feature = "plain")]
+use plain::Plain;
+
 use crate::{
     AllocSliceDst, DstLayout, dst_cast_impl, dst_len,
     initializers::{
@@ -123,3 +126,6 @@ mod tests {
         // MIRI should catch any leaks here
     }
 }
+
+#[cfg(feature = "plain")]
+unsafe impl<H: Plain, I: Plain> Plain for SliceWithHeader<H, I> {}

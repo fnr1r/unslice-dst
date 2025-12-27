@@ -12,6 +12,7 @@ keywords = ["dst", "slice", "type", "unsized"]
 categories = ["no-std", "rust-patterns"]
 
 [dependencies]
+plain = { version = "0.2", optional = true }
 
 [features]
 default = ["cast_macro_tt_muncher", "std"]
@@ -25,3 +26,5 @@ layout_automatic = ["cast_macro_tt_muncher"]
 
 std = ["cast_macro_tt_muncher"]
 std_ffi_cstr_impl = ["std"]
+
+plain = ["dep:plain"]

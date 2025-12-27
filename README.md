@@ -36,3 +36,7 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
 - `std_ffi_cstr_impl` - same as `core_ffi_cstr_impl`, but for
   [`std::ffi::CStr`]  
   WARNING: Same issues as `core_ffi_cstr_impl` apply.
+
+### Extras
+
+- `plain` - implement [`Plain`](plain::Plain) for own structs
