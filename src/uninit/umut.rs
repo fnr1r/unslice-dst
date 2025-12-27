@@ -78,6 +78,11 @@ impl<'a, T: ?Sized> UninitMut<'a, T> {
     pub(crate) const unsafe fn new(ptr: NonNull<T>) -> Self {
         Self(ptr, PhantomData)
     }
+    /// TODO: move this out
+    #[inline]
+    pub(crate) const fn cast<U>(self) -> UninitMut<'a, U> {
+        unsafe { UninitMut::new(self.0.cast()) }
+    }
 }
 
 impl<'a, T> UninitMut<'a, T> {
