@@ -9,6 +9,9 @@ use crate::DstCast;
 mod pointer_with;
 mod slice_dst_pointer;
 
+#[cfg(test)]
+mod tests;
+
 /// Extracts the data from a fat pointer to `T`
 ///
 /// See [`SliceDstPointer::from_ptr`] for more info.
