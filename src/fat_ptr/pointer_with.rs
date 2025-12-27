@@ -1,3 +1,6 @@
+#[cfg(feature = "plain")]
+use plain::Plain;
+
 /// Structure for fat pointers
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(C)]
@@ -20,3 +23,6 @@ impl<T: Copy> PointerWith<T> {
         (self.address, self.metadata)
     }
 }
+
+#[cfg(feature = "plain")]
+unsafe impl<T: Plain> Plain for PointerWith<T> {}

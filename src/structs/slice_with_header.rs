@@ -7,6 +7,9 @@ use core::{
     ops::{Deref, DerefMut},
 };
 
+#[cfg(feature = "plain")]
+use plain::Plain;
+
 pub use self::config::*;
 use crate::{
     AllocSliceDst, DstLayout, dst_cast_impl,
@@ -136,3 +139,6 @@ mod tests {
         // MIRI should catch any leaks here
     }
 }
+
+#[cfg(feature = "plain")]
+unsafe impl<H: Plain, I: Plain, C> Plain for SliceWithHeader<H, I, C> {}

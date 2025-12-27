@@ -117,3 +117,6 @@ impl<T: ?Sized + DstCast> From<*const T> for SliceDstPointer {
         Self::from_ptr(value)
     }
 }
+
+#[cfg(feature = "plain")]
+unsafe impl plain::Plain for SliceDstPointer {}
