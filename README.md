@@ -62,4 +62,11 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
   [`std::ffi::CStr`]  
   WARNING: Same issues as `core_ffi_cstr_impl` apply.
 
+### Extras
+
+- `plain` - implement [`Plain`] for own structs
+  (why not [`bytemuck`]? because [`bytemuck`] requires [`Sized`])
+
+[`bytemuck`]: https://crates.io/crates/bytemuck
 [`?Sized`]: core::marker::Sized
+[`Plain`]: https://docs.rs/plain/0.2.3/plain/trait.Plain.html
