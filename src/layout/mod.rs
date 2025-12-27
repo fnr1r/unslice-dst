@@ -12,6 +12,9 @@ mod funcs;
 mod impls;
 mod manual;
 
+#[cfg(test)]
+mod tests;
+
 /// Bare minimum of information required for calculating DST [`Layout`]s
 ///
 /// Slice-like DSTs can be dumbed down to having a header, of size known at
