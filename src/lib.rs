@@ -11,7 +11,9 @@
 #![warn(clippy::std_instead_of_core)]
 #![warn(clippy::missing_const_for_fn)]
 #![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(miri, feature(layout_for_ptr))]
 
+use self::layout::MaybeDstLayout;
 pub use self::{
     cast::DstCast,
     fat_ptr::{dst_addr, dst_data, dst_len},
@@ -32,6 +34,6 @@ pub type AnyDst = [()];
 ///
 /// Automatically implemented for every type which implements [DstCast] and
 /// [DstLayout]
-pub trait SliceDst: DstCast + DstLayout {}
+pub trait SliceDst: DstCast + MaybeDstLayout {}
 
-impl<T: ?Sized + DstCast + DstLayout> SliceDst for T {}
+impl<T: ?Sized + DstCast + MaybeDstLayout> SliceDst for T {}
