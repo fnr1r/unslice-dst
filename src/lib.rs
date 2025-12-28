@@ -15,6 +15,7 @@
 pub use self::cast::DstCast;
 
 pub mod cast;
+mod utils;
 
 /// Just a type alias for a slice of units.
 ///
