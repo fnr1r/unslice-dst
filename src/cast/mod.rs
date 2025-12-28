@@ -2,7 +2,7 @@
 
 pub use self::{
     dst_cast::DstCast,
-    funcs::{dst_cast_const, dst_cast_mut},
+    funcs::{dst_cast_const, dst_cast_mut, dst_cast_nonnull},
 };
 pub use crate::dst_cast_impl;
 

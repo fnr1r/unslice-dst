@@ -1,5 +1,7 @@
 //! WTF, clippy? We are not dereferencing pointers.
 
+use core::ptr::NonNull;
+
 use super::DstCast;
 use crate::utils::transmute_lax;
 
@@ -31,4 +33,20 @@ where
     U: ?Sized + DstCast,
 {
     unsafe { transmute_lax::<*mut T, *mut U>(src) }
+}
+
+/// Cast a [`NonNull`] pointer from slice-like DST `T` to slice-like DST `U`
+///
+/// [`dst_cast_mut`] but for [`NonNull`]
+///
+/// # Safety
+///
+/// [`DstCast`] guarantees that both fat pointers have the same metadata
+#[inline]
+pub const fn dst_cast_nonnull<T, U>(src: NonNull<T>) -> NonNull<U>
+where
+    T: ?Sized + DstCast,
+    U: ?Sized + DstCast,
+{
+    unsafe { transmute_lax::<NonNull<T>, NonNull<U>>(src) }
 }
