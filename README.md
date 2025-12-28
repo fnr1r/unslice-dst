@@ -17,6 +17,8 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
 - `casting_unseal` - reveals the sealed type for manual implementation  
   WARNING: Please don't. If the macro doesn't work, your type likely isn't
   compatible.
+- `layout_automatic` - use the automatic layout implementation
+  WARNING: relies on Undefined Behavior
 - `std` - Rust `std` crate support, featuring:
   - impls of `DstCast` for `std` slice-like types
   - impls of `DstLayout` for `std` (only on Unix tho)

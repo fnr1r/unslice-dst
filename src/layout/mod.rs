@@ -4,10 +4,13 @@
 //!
 //! May depend on casting
 
-pub use self::funcs::layout_for_len;
+pub(crate) use self::funcs::MaybeDstLayout;
+pub use self::funcs::{layout_for_len, layout_for_ptr};
 
+mod automatic;
 mod funcs;
 mod impls;
+mod manual;
 
 /// Bare minimum of information required for calculating DST [`Layout`]s
 ///

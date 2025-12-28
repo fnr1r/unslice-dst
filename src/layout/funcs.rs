@@ -1,28 +1,47 @@
-use core::alloc::{Layout, LayoutError};
+use core::alloc::Layout;
 
+#[cfg(not(feature = "layout_automatic"))]
 use super::DstLayout;
+#[cfg(feature = "layout_automatic")]
+use crate::DstCast;
+use crate::{SliceDst, dst_len};
 
-const fn layout_try_for_len<T: ?Sized + DstLayout>(len: usize) -> Result<Layout, LayoutError> {
-    let hlayout = Layout::new::<T::Header>();
-    let ilayout = match Layout::array::<T::Item>(len) {
-        Ok(res) => res,
-        Err(e) => return Err(e),
-    };
-    let layout = match hlayout.extend(ilayout) {
-        Ok((res, _)) => res,
-        Err(e) => return Err(e),
-    };
-    Ok(layout.pad_to_align())
+#[cfg(feature = "layout_automatic")]
+pub trait MaybeDstLayout: DstCast {}
+#[cfg(not(feature = "layout_automatic"))]
+pub trait MaybeDstLayout: DstLayout {}
+
+#[cfg(feature = "layout_automatic")]
+impl<T: ?Sized + DstCast> MaybeDstLayout for T {}
+#[cfg(not(feature = "layout_automatic"))]
+impl<T: ?Sized + DstLayout> MaybeDstLayout for T {}
+
+/// Produces layout describing a record that could be used to allocate backing
+/// structure for slice-like DST `T`.
+///
+/// # Note
+///
+/// Depending on feature flags, it may use a different implementation.
+#[inline]
+pub const fn layout_for_len<T>(len: usize) -> Layout
+where
+    T: ?Sized + MaybeDstLayout,
+{
+    #[cfg(feature = "layout_automatic")]
+    use super::automatic::layout_for_len_hack as inner;
+    #[cfg(not(feature = "layout_automatic"))]
+    use super::manual::layout_for_len as inner;
+    inner::<T>(len)
 }
 
 /// Produces layout describing a record that could be used to allocate backing
 /// structure for slice-like DST `T`.
 ///
-/// See [`Layout::for_value_raw`]
-#[allow(unused)]
-pub const fn layout_for_len<T: ?Sized + DstLayout>(len: usize) -> Layout {
-    match layout_try_for_len::<T>(len) {
-        Ok(res) => res,
-        Err(_) => panic!("layout doesn't fit"),
-    }
+/// (but for pointers)
+#[inline]
+pub const fn layout_for_ptr<T>(ptr: *const T) -> Layout
+where
+    T: ?Sized + SliceDst,
+{
+    layout_for_len::<T>(dst_len(ptr))
 }
