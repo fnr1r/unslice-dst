@@ -5,7 +5,7 @@ use core::{
 };
 
 use super::PointerWith;
-use crate::{utils::transmute_lax, AnyDst, DstCast};
+use crate::{AnyDst, DstCast, utils::transmute_lax};
 
 pub(super) type Inner = PointerWith<usize>;
 

@@ -1,4 +1,4 @@
-use super::{dst_cast_const, DstCast};
+use super::{DstCast, dst_cast_const};
 
 const TEST_DATA: &[u8] = &[130; 32];
 const TEST_RESULT: isize = -126;

@@ -1,4 +1,4 @@
-use core::mem::{align_of, size_of, ManuallyDrop};
+use core::mem::{ManuallyDrop, align_of, size_of};
 
 union TransmuteLax<A, B> {
     a: ManuallyDrop<A>,

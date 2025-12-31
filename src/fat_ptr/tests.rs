@@ -1,4 +1,4 @@
-use super::{dst_len, SliceDstPointer};
+use super::{SliceDstPointer, dst_len};
 use crate::cast::{dst_cast_const, dst_cast_impl};
 
 const LEN: usize = 420;
