@@ -2,8 +2,8 @@
 name = "unslice-dst"
 version = "0.1.0"
 authors = ["fnrir"]
-edition = "2021"
-rust-version = "1.81"
+edition = "2018"
+rust-version = "1.54"
 readme = "README.md"
 
 [dependencies]
