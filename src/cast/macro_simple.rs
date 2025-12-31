@@ -8,6 +8,10 @@
 /// This macro automatically implements an `unsafe` trait. See [`DstCast`] for
 /// more.
 ///
+/// # Notes
+///
+/// This is a regular macro. See crate-level docs for info.
+///
 /// [`DstCast`]: [super::DstCast]
 #[macro_export]
 macro_rules! dst_cast_impl {

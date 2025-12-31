@@ -9,5 +9,6 @@ readme = "README.md"
 [dependencies]
 
 [features]
-default = []
+default = ["cast_macro_tt_muncher"]
 cast_impl_core_cstr = []
+cast_macro_tt_muncher = []

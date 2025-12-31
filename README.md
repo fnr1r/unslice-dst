@@ -11,3 +11,4 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
   (requires Rust 1.64)  
   WARNING: The repr of `CStr` is not guaranteed! See the official [`core`] docs
   for more info.
+- `cast_macro_tt` - uses a more flexible TT muncher macro

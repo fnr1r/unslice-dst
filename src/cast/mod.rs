@@ -5,4 +5,7 @@ pub use crate::dst_cast_impl;
 
 mod dst_cast;
 mod impls;
-mod auto_impl;
+#[cfg(not(feature = "cast_macro_tt_muncher"))]
+mod macro_simple;
+#[cfg(feature = "cast_macro_tt_muncher")]
+mod macro_tt_muncher;
