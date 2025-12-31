@@ -11,5 +11,6 @@ readme = "README.md"
 [features]
 default = ["cast_macro_tt_muncher", "std"]
 cast_impl_core_cstr = []
+cast_impl_std_cstr = ["std"]
 cast_macro_tt_muncher = []
 std = ["cast_macro_tt_muncher"]
