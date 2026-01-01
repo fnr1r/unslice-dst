@@ -1,6 +1,6 @@
 //! Private initializers API
 
-pub(crate) use self::aliases::*;
+pub(crate) use self::{aliases::*, slice_from_iter::write_slice_iter_fn};
 use crate::{
     DstCast, DstLayout,
     cast::dst_cast_nonnull,
@@ -8,6 +8,7 @@ use crate::{
 };
 
 mod aliases;
+mod slice_from_iter;
 
 #[allow(dead_code)]
 #[inline]
