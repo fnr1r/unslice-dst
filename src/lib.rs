@@ -32,6 +32,7 @@ pub mod container;
 #[cfg(not(feature = "container_unseal"))]
 mod container;
 pub mod fat_ptr;
+pub(crate) mod initializers;
 pub mod layout;
 pub mod structs;
 pub mod uninit;
