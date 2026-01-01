@@ -9,6 +9,10 @@ use core::{alloc::Layout, ptr::NonNull};
 use crate::SliceDst;
 
 mod impl_box;
+#[cfg(feature = "container_rc_optimize")]
+#[cfg_attr(not(feature = "container_unseal"), allow(dead_code))]
+mod impl_rc_optimized;
+#[cfg(not(feature = "container_rc_optimize"))]
 mod impl_rc_with_box;
 
 /// Any smart pointer which can contain a DST
