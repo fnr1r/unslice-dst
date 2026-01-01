@@ -17,11 +17,13 @@ extern crate alloc;
 
 use self::layout::MaybeDstLayout;
 pub use self::{
+    allocation::AllocSliceDst,
     cast::DstCast,
     fat_ptr::{dst_addr, dst_data, dst_len},
     layout::DstLayout,
 };
 
+pub mod allocation;
 pub mod cast;
 #[cfg(feature = "container_unseal")]
 pub mod container;

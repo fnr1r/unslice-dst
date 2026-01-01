@@ -22,7 +22,6 @@ mod impl_rc_with_box;
 ///
 /// [`Box`]: alloc::boxed::Box
 #[allow(clippy::missing_safety_doc)]
-#[cfg_attr(not(feature = "container_unseal"), allow(dead_code, unreachable_pub))]
 pub unsafe trait DstContainer: Sized {
     /// The data behind the smart pointer.
     ///
