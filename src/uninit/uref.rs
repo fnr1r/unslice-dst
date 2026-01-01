@@ -65,6 +65,12 @@ impl<'a, T: ?Sized> Deref for UninitRef<'a, T> {
         &self.0
     }
 }
+impl<'a, T: ?Sized> UninitRef<'a, T> {
+    #[inline]
+    pub(crate) const unsafe fn new(ptr: NonNull<T>) -> Self {
+        Self(ptr, PhantomData)
+    }
+}
 
 impl<'a, T> UninitRef<'a, T> {
     /// Convert self into the canonical Rust representation

@@ -9,6 +9,7 @@ use core::{
 
 use crate::{
     cast::dst_cast_nonnull,
+    uninit::UninitRef,
     utils::slice::{slice_as_uninit, slice_assume_init_mut},
 };
 
@@ -78,6 +79,10 @@ impl<'a, T: ?Sized> UninitMut<'a, T> {
     pub(crate) const unsafe fn new(ptr: NonNull<T>) -> Self {
         Self(ptr, PhantomData)
     }
+    #[inline]
+    pub(crate) const fn into_ref(self) -> UninitRef<'a, T> {
+        unsafe { UninitRef::new(self.0) }
+    }
     /// TODO: move this out
     #[inline]
     pub(crate) const fn cast<U>(self) -> UninitMut<'a, U> {
@@ -93,6 +98,10 @@ impl<'a, T> UninitMut<'a, T> {
     pub const fn into_canonical(self) -> &'a mut MaybeUninit<T> {
         // SAFETY: The pointer is valid
         unsafe { self.0.cast().as_mut() }
+    }
+    #[inline]
+    pub(crate) const fn write(self, val: T) -> &'a mut T {
+        self.into_canonical().write(val)
     }
 }
 
