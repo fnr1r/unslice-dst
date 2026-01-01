@@ -8,6 +8,8 @@ use core::{alloc::Layout, ptr::NonNull};
 
 use crate::SliceDst;
 
+mod impl_box;
+
 /// Any smart pointer which can contain a DST
 ///
 /// Avoid using this outside of the `alloc` module. This is supposed to be a

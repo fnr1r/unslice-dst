@@ -18,7 +18,7 @@ unsafe fn nonnull_alloc(layout: Layout) -> NonNull<u8> {
 /// Although the UB is handled, this function is unsafe to match the others.
 #[cfg_attr(not(feature = "container_unseal"), allow(dead_code))]
 #[inline]
-unsafe fn alloc_maydangle(layout: Layout) -> NonNull<()> {
+pub(crate) unsafe fn alloc_maydangle(layout: Layout) -> NonNull<()> {
     if layout.size() == 0 {
         NonNull::dangling()
     } else {
@@ -34,7 +34,7 @@ unsafe fn nonnull_dealloc(ptr: NonNull<u8>, layout: Layout) {
 
 #[cfg_attr(not(feature = "container_unseal"), allow(dead_code))]
 #[inline]
-unsafe fn dealloc_maydangle(ptr: NonNull<u8>, layout: Layout) {
+pub(crate) unsafe fn dealloc_maydangle(ptr: NonNull<u8>, layout: Layout) {
     if layout.size() == 0 {
         return;
     }
