@@ -11,6 +11,9 @@ use crate::container::DstContainer;
 mod funcs;
 mod uninit_box;
 
+#[cfg(test)]
+mod tests;
+
 /// Types that can allocate a custom slice DST within them,
 /// given a fallible initialization function.
 ///

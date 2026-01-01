@@ -8,9 +8,10 @@ use crate::{
 };
 
 #[inline]
-fn alloc_for_slice_dst_raw<T>(alloc_fn: impl AllocFn, len: usize) -> (Layout, NonNull<T>)
+pub(super) fn alloc_for_slice_dst_raw<T, F>(alloc_fn: F, len: usize) -> (Layout, NonNull<T>)
 where
     T: ?Sized + SliceDst,
+    F: AllocFn,
 {
     let layout = layout_for_len::<T>(len);
     let ptr = alloc_if_non_zero(alloc_fn, layout);
