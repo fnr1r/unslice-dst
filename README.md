@@ -18,6 +18,8 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
   compatible.
 - `container_unseal` - allows implementation of `DstContainer` for foreign
   smart pointers
+- `container_rc_optimize` - optimize `(A)Rc` container allocations  
+  WARNING: prone to ABI changes
 - `core_ffi_cstr_impl` - implements [`DstCast`] and [`DstLayout`] for
   [`core::ffi::CStr`] (requires Rust 1.64)  
   WARNING: The repr of `CStr` is not guaranteed! See the official [`core`] docs

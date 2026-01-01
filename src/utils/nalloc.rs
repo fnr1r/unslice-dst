@@ -33,7 +33,7 @@ pub(crate) unsafe fn alloc_maydangle(layout: Layout) -> NonNull<()> {
 }
 
 #[inline]
-unsafe fn nonnull_dealloc(ptr: NonNull<u8>, layout: Layout) {
+pub(crate) unsafe fn nonnull_dealloc(ptr: NonNull<u8>, layout: Layout) {
     unsafe { dealloc(ptr.as_ptr(), layout) }
 }
 
