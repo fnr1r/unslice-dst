@@ -7,15 +7,17 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
 
 ## Features
 
-### without std or alloc / safe
+### without std / safe
 
 - `cast_macro_tt` - uses a more flexible TT muncher macro
 
-### without std or alloc / unsafe
+### without std / unsafe
 
 - `cast_unseal` - reveals the sealed type for manual implementation  
   WARNING: Please don't. If the macro doesn't work, your type likely isn't
   compatible.
+- `container_unseal` - allows implementation of `DstContainer` for foreign
+  smart pointers
 - `core_ffi_cstr_impl` - implements [`DstCast`] and [`DstLayout`] for
   [`core::ffi::CStr`] (requires Rust 1.64)  
   WARNING: The repr of `CStr` is not guaranteed! See the official [`core`] docs

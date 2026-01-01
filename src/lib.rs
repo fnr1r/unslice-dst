@@ -13,6 +13,8 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(miri, feature(layout_for_ptr))]
 
+extern crate alloc;
+
 use self::layout::MaybeDstLayout;
 pub use self::{
     cast::DstCast,
@@ -21,6 +23,10 @@ pub use self::{
 };
 
 pub mod cast;
+#[cfg(feature = "container_unseal")]
+pub mod container;
+#[cfg(not(feature = "container_unseal"))]
+mod container;
 pub mod fat_ptr;
 pub mod layout;
 mod utils;

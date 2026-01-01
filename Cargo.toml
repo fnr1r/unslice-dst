@@ -14,6 +14,7 @@ default = ["cast_macro_tt_muncher", "std"]
 cast_macro_tt_muncher = []
 
 cast_unseal = []
+container_unseal = []
 core_ffi_cstr_impl = []
 layout_automatic = ["cast_macro_tt_muncher"]
 
