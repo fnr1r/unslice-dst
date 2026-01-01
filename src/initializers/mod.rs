@@ -5,7 +5,10 @@ use core::{
     ptr::NonNull,
 };
 
+pub(crate) use self::slice_from_iter::write_slice_iter_fn;
 use crate::{DstCast, DstLayout, cast::dst_cast_nonnull};
+
+mod slice_from_iter;
 
 pub(crate) trait DstInit<T: ?Sized>: FnOnce(NonNull<T>) {}
 pub(crate) trait HeadInit<T>: FnOnce(&mut MaybeUninit<T>) -> &mut T {}
