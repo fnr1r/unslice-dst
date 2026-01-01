@@ -4,9 +4,11 @@
 
 use core::{convert::Infallible, ptr::NonNull};
 
+pub use self::funcs::alloc_for_slice_dst;
 use self::uninit_box::UninitBox;
 use crate::container::DstContainer;
 
+mod funcs;
 mod uninit_box;
 
 /// Types that can allocate a custom slice DST within them,

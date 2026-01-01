@@ -17,7 +17,7 @@ extern crate alloc;
 
 use self::layout::MaybeDstLayout;
 pub use self::{
-    allocation::AllocSliceDst,
+    allocation::{AllocSliceDst, alloc_for_slice_dst},
     cast::DstCast,
     fat_ptr::{dst_addr, dst_data, dst_len},
     layout::DstLayout,
