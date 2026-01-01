@@ -9,6 +9,7 @@ use core::{alloc::Layout, ptr::NonNull};
 use crate::SliceDst;
 
 mod impl_box;
+mod impl_rc_with_box;
 
 /// Any smart pointer which can contain a DST
 ///
