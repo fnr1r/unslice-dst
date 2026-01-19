@@ -31,11 +31,11 @@ fn works_with_str() {
     assert_eq!(dst_len(TEST_STR), TEST_STR.len());
 }
 
-#[cfg(any(feature = "cast_impl_core_cstr", feature = "cast_impl_std_cstr",))]
+#[cfg(any(feature = "core_ffi_cstr_impl", feature = "std_ffi_cstr_impl"))]
 mod cstr {
-    #[cfg(feature = "cast_impl_core_cstr")]
+    #[cfg(feature = "core_ffi_cstr_impl")]
     use core::ffi::CStr;
-    #[cfg(all(not(feature = "cast_impl_core_cstr"), feature = "cast_impl_std_cstr",))]
+    #[cfg(all(not(feature = "core_ffi_cstr_impl"), feature = "std_ffi_cstr_impl"))]
     use std::ffi::CStr;
 
     use super::*;
