@@ -16,8 +16,8 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
 - `cast_unseal` - reveals the sealed type for manual implementation  
   WARNING: Please don't. If the macro doesn't work, your type likely isn't
   compatible.
-- `core_ffi_cstr_impl` - implements [`DstCast`] for [`core::ffi::CStr`]
-  (requires Rust 1.64)  
+- `core_ffi_cstr_impl` - implements [`DstCast`] and [`DstLayout`] for
+  [`core::ffi::CStr`] (requires Rust 1.64)  
   WARNING: The repr of `CStr` is not guaranteed! See the official [`core`] docs
   for more info.
 

@@ -10,6 +10,12 @@ unsafe impl DstLayout for str {
     type Tail = u8;
 }
 
+#[cfg(feature = "core_ffi_cstr_impl")]
+unsafe impl DstLayout for core::ffi::CStr {
+    type Head = ();
+    type Tail = u8;
+}
+
 #[cfg(feature = "std")]
 mod for_std {
     use std::ffi::OsStr;
@@ -30,4 +36,10 @@ mod for_std {
         type Head = ();
         type Tail = <OsStr as DstLayout>::Tail;
     }
+}
+
+#[cfg(all(not(feature = "core_ffi_cstr_impl"), feature = "std_ffi_cstr_impl"))]
+unsafe impl DstLayout for std::ffi::CStr {
+    type Head = ();
+    type Tail = u8;
 }
