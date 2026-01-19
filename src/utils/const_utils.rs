@@ -2,6 +2,18 @@
 
 use core::{mem::ManuallyDrop, ptr};
 
+#[inline]
+pub(crate) const fn usize_max(v1: usize, v2: usize) -> usize {
+    if v1 > v2 { v1 } else { v2 }
+}
+
+#[inline]
+pub(crate) const fn size_round_up(size: usize, align: usize) -> usize {
+    debug_assert!(align > 0);
+    let align_m1 = unsafe { align.unchecked_sub(1) };
+    (unsafe { size.unchecked_add(align_m1) }) & !align_m1
+}
+
 /// Create a reference to T from a [`ManuallyDrop`] `T`
 ///
 /// from `const-util` 2.2.0
