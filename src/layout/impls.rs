@@ -9,3 +9,25 @@ unsafe impl DstLayout for str {
     type Head = ();
     type Tail = u8;
 }
+
+#[cfg(feature = "std")]
+mod for_std {
+    use std::ffi::OsStr;
+
+    use super::*;
+
+    /// # Implementation notes
+    ///
+    /// - On Windows, it's Wtf8, backed by slice of u8
+    /// - On Motor, it's Utf8, which doesn't matter for us
+    /// - Otherwise, it's just a slice of u8
+    unsafe impl DstLayout for OsStr {
+        type Head = ();
+        type Tail = u8;
+    }
+
+    unsafe impl DstLayout for std::path::Path {
+        type Head = ();
+        type Tail = <OsStr as DstLayout>::Tail;
+    }
+}
