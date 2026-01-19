@@ -1,18 +1,12 @@
 use core::alloc::{Layout, LayoutError};
 
 use super::DstLayout;
-use crate::{DstCast, dst_len};
+use crate::{DstCast, ctry, dst_len, utils::const_utils::unwrap_ok};
 
 const fn layout_try_for_len<T: ?Sized + DstLayout>(len: usize) -> Result<Layout, LayoutError> {
     let hlayout = Layout::new::<T::Head>();
-    let ilayout = match Layout::array::<T::Tail>(len) {
-        Ok(res) => res,
-        Err(e) => return Err(e),
-    };
-    let layout = match hlayout.extend(ilayout) {
-        Ok((res, _)) => res,
-        Err(e) => return Err(e),
-    };
+    let ilayout = ctry!(Layout::array::<T::Tail>(len));
+    let layout = ctry!(hlayout.extend(ilayout)).0;
     Ok(layout.pad_to_align())
 }
 
@@ -21,10 +15,7 @@ const fn layout_try_for_len<T: ?Sized + DstLayout>(len: usize) -> Result<Layout,
 ///
 /// See [`Layout::for_value_raw`]
 pub(super) const fn layout_for_len<T: ?Sized + DstLayout>(len: usize) -> Layout {
-    match layout_try_for_len::<T>(len) {
-        Ok(res) => res,
-        Err(_) => panic!("layout doesn't fit"),
-    }
+    unwrap_ok(layout_try_for_len::<T>(len))
 }
 
 #[cfg_attr(feature = "layout_automatic", allow(dead_code))]
