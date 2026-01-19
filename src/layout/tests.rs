@@ -1,6 +1,8 @@
 use core::alloc::Layout;
 
 use super::{DstLayout, layout_for_len};
+#[cfg(feature = "layout_automatic")]
+use crate::dst_cast_impl;
 
 #[derive(Debug)]
 #[repr(C)]
@@ -10,6 +12,9 @@ struct ExampleDst<const N: usize> {
     f3: [f64; N],
     f4: [i16],
 }
+
+#[cfg(feature = "layout_automatic")]
+dst_cast_impl!(<const N: usize> for ExampleDst<N>);
 
 unsafe impl<const N: usize> DstLayout for ExampleDst<N> {
     type Head = (u8, (), [f64; N]);
