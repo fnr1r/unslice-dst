@@ -3,6 +3,11 @@
 /// This macro will cause a compilation failure if the fat pointer metadata is
 /// not [`usize`].
 ///
+/// # Broken
+///
+/// This macro doesn't support const generics required for the tests of the
+/// `layout` module and is planned to be removed.
+///
 /// # Safety
 ///
 /// This macro automatically implements an `unsafe` trait. See [`DstCast`] for
