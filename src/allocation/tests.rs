@@ -6,6 +6,9 @@ use crate::{
     utils::nalloc::{dealloc_maydangle, nonnull_alloc},
 };
 
+#[cfg(feature = "std")]
+mod with_std;
+
 #[inline]
 pub(super) fn alloc_for_slice_dst_wl<T>(len: usize) -> (Layout, NonNull<T>)
 where
