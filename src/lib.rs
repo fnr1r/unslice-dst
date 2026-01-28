@@ -3,7 +3,7 @@
 #![deny(unsafe_op_in_unsafe_fn)]
 #![warn(missing_copy_implementations)]
 #![warn(missing_debug_implementations)]
-#![warn(missing_docs)]
+//#![warn(missing_docs)]
 #![warn(trivial_casts)]
 #![warn(unreachable_pub)]
 #![warn(clippy::alloc_instead_of_core)]
