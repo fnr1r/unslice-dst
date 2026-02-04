@@ -5,7 +5,9 @@ use core::{
     ptr::NonNull,
 };
 
+use super::FieldInfo;
 use crate::{
+    DstCast,
     cast::dst_cast_nonnull,
     utils::slice::{slice_as_uninit, slice_assume_init_mut},
 };
@@ -72,5 +74,21 @@ impl<'a, T> UninitMut<'a, [T]> {
         this.copy_from_slice(slice_as_uninit(src));
         // SAFETY: this is initialized by the above call
         unsafe { slice_assume_init_mut(this) }
+    }
+}
+
+impl<'a, T: ?Sized + DstCast> UninitMut<'a, T> {
+    /// Transform the pointer based on the provided field metadata
+    #[inline]
+    pub const fn transform_sized<U>(self, info: FieldInfo<T, U>) -> UninitMut<'a, U> {
+        UninitMut(unsafe { info.transform_sized(self.0) }, PhantomData)
+    }
+    /// Transform the pointer based on the provided field metadata
+    #[inline]
+    pub const fn transform_dst<U>(self, info: FieldInfo<T, U>) -> UninitMut<'a, U>
+    where
+        U: ?Sized + DstCast,
+    {
+        UninitMut(unsafe { info.transform_dst(self.0) }, PhantomData)
     }
 }
