@@ -7,9 +7,7 @@ use core::{
 
 use super::FieldInfo;
 use crate::{
-    DstCast,
-    cast::dst_cast_nonnull,
-    utils::slice::{slice_as_uninit, slice_assume_init_mut},
+    DstCast, DstLayout, cast::dst_cast_nonnull, uninit::DstFieldInfo, utils::slice::{slice_as_uninit, slice_assume_init_mut}
 };
 
 /// [NonNull] but mut (invariant) and valid for a set lifetime.
@@ -90,5 +88,21 @@ impl<'a, T: ?Sized + DstCast> UninitMut<'a, T> {
         U: ?Sized + DstCast,
     {
         UninitMut(unsafe { info.transform_dst(self.0) }, PhantomData)
+    }
+}
+
+impl<'a, T: ?Sized + DstCast + DstLayout> UninitMut<'a, T> {
+    /// Return two disjoint pointers to fields of a known DST
+    ///
+    /// # Safety
+    ///
+    /// This is safe, since the head and tail fields can't overlap.
+    #[inline]
+    pub const fn into_fields(self, info: DstFieldInfo<T>) -> (UninitMut<'a, T::Head>, UninitMut<'a, [T::Tail]>) {
+        let self2 = unsafe { core::ptr::read(&self) };
+        (
+            self.transform_sized(info.head),
+            self2.transform_dst(info.tail),
+        )
     }
 }
