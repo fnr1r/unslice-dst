@@ -10,6 +10,7 @@
 #![warn(clippy::std_instead_of_alloc)]
 #![warn(clippy::std_instead_of_core)]
 #![warn(clippy::missing_const_for_fn)]
+#![warn(clippy::transmute_undefined_repr)]
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(miri, feature(layout_for_ptr))]
 
@@ -31,6 +32,7 @@ pub mod container;
 mod container;
 pub mod fat_ptr;
 pub mod layout;
+pub mod uninit;
 mod utils;
 
 /// Just a type alias for a slice of units.

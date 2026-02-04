@@ -1,6 +1,11 @@
-use core::{marker::PhantomData, mem::ManuallyDrop, ptr::NonNull};
+use core::{marker::PhantomData, mem::ManuallyDrop};
 
-use crate::{cast::dst_from_raw_parts_nonnull, container::DstContainer, layout::layout_for_len};
+use crate::{
+    cast::dst_from_raw_parts_nonnull,
+    container::DstContainer,
+    layout::layout_for_len,
+    uninit::{UninitMut, UninitOwner},
+};
 
 #[inline]
 const unsafe fn unwrap_invariant<T>(value: Option<T>, s: &str) -> T {
@@ -14,14 +19,14 @@ const unsafe fn unwrap_invariant<T>(value: Option<T>, s: &str) -> T {
 #[derive(Debug)]
 #[must_use]
 pub(super) struct UninitBoxInner<T: DstContainer> {
-    ptr: NonNull<T::Target>,
+    ptr: UninitOwner<T::Target>,
     context: T::Context,
     container: PhantomData<T>,
 }
 
 impl<T: DstContainer> UninitBoxInner<T> {
     #[inline]
-    const fn new(ptr: NonNull<T::Target>, context: T::Context) -> Self {
+    const fn new(ptr: UninitOwner<T::Target>, context: T::Context) -> Self {
         Self {
             ptr,
             context,
@@ -33,15 +38,15 @@ impl<T: DstContainer> UninitBoxInner<T> {
         let layout = layout_for_len::<T::Target>(len);
         let (ptr, ctx) = unsafe { T::dst_allocate(layout) };
         let ptr = dst_from_raw_parts_nonnull(ptr, len);
-        Self::new(ptr, ctx)
+        Self::new(UninitOwner::new(ptr), ctx)
     }
     #[inline]
     fn finalize(self) -> T {
-        unsafe { T::dst_finalize(self.ptr, self.context) }
+        unsafe { T::dst_finalize(self.ptr.into_inner(), self.context) }
     }
     #[inline]
     fn destroy(self) {
-        unsafe { T::dst_dealloc(self.ptr, self.context) }
+        unsafe { T::dst_dealloc(self.ptr.into_inner(), self.context) }
     }
 }
 
@@ -61,12 +66,12 @@ impl<T: DstContainer> UninitBox<T> {
         Self::new(UninitBoxInner::<T>::alloc_for_len(len))
     }
     #[inline]
-    const fn borrow(&self) -> &UninitBoxInner<T> {
-        unsafe { unwrap_invariant(self.inner.as_ref(), "invariants violated") }
+    const fn borrow_mut(&mut self) -> &mut UninitBoxInner<T> {
+        unsafe { unwrap_invariant(self.inner.as_mut(), "invariants violated") }
     }
     #[inline]
-    pub(super) const fn as_ptr(&self) -> NonNull<T::Target> {
-        self.borrow().ptr
+    pub(super) const fn as_ptr(&mut self) -> UninitMut<'_, T::Target> {
+        self.borrow_mut().ptr.as_mut()
     }
     #[inline]
     const fn take_once(&mut self) -> UninitBoxInner<T> {
