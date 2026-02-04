@@ -3,6 +3,7 @@ use core::{alloc::Layout, ptr::NonNull};
 use super::funcs::alloc_for_slice_dst_raw;
 use crate::{
     SliceDst,
+    uninit::UninitMut,
     utils::nalloc::{dealloc_maydangle, nonnull_alloc},
 };
 
@@ -18,21 +19,24 @@ where
     alloc_for_slice_dst_raw(alloc_fn, len)
 }
 
-fn with_dst<T: ?Sized + SliceDst, R>(len: usize, f: impl FnOnce(NonNull<T>, &Layout) -> R) -> R {
+fn with_dst<T: ?Sized + SliceDst, R>(
+    len: usize,
+    f: impl FnOnce(UninitMut<'_, T>, &Layout) -> R,
+) -> R {
     let (layout, ptr) = alloc_for_slice_dst_wl::<T>(len);
-    let res = f(ptr, &layout);
+    let res = f(unsafe { UninitMut::new(ptr) }, &layout);
     unsafe { dealloc_maydangle(ptr.cast(), layout) }
     res
 }
 
 fn ignore_layout_fn<T: ?Sized + SliceDst, R>(
-    f: impl FnOnce(NonNull<T>) -> R,
-) -> impl FnOnce(NonNull<T>, &Layout) -> R {
+    f: impl FnOnce(UninitMut<'_, T>) -> R,
+) -> impl FnOnce(UninitMut<'_, T>, &Layout) -> R {
     |ptr, _layout| f(ptr)
 }
 
 #[test]
 fn assert_works_for_zst() {
-    let f = ignore_layout_fn(|ptr: NonNull<[()]>| ptr.addr());
+    let f = ignore_layout_fn(|ptr: UninitMut<'_, [()]>| ptr.addr());
     assert_eq!(with_dst(24, f).get(), 1);
 }

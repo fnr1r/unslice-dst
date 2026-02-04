@@ -1,6 +1,9 @@
 use core::{marker::PhantomData, mem::ManuallyDrop, ptr::NonNull};
 
-use crate::{cast::dst_from_raw_parts_nonnull, container::DstContainer, layout::layout_for_len};
+use crate::{
+    cast::dst_from_raw_parts_nonnull, container::DstContainer, layout::layout_for_len,
+    uninit::UninitMut,
+};
 
 #[inline]
 const unsafe fn unwrap_invariant<T>(value: Option<T>, s: &str) -> T {
@@ -36,6 +39,10 @@ impl<T: DstContainer> UninitBoxInner<T> {
         Self::new(ptr, ctx)
     }
     #[inline]
+    const fn as_mut(&mut self) -> UninitMut<'_, T::Target> {
+        unsafe { UninitMut::new(self.ptr) }
+    }
+    #[inline]
     fn finalize(self) -> T {
         unsafe { T::dst_finalize(self.ptr, self.context) }
     }
@@ -61,12 +68,12 @@ impl<T: DstContainer> UninitBox<T> {
         Self::new(UninitBoxInner::<T>::alloc_for_len(len))
     }
     #[inline]
-    const fn borrow(&self) -> &UninitBoxInner<T> {
-        unsafe { unwrap_invariant(self.inner.as_ref(), "invariants violated") }
+    const fn borrow_mut(&mut self) -> &mut UninitBoxInner<T> {
+        unsafe { unwrap_invariant(self.inner.as_mut(), "invariants violated") }
     }
     #[inline]
-    pub(super) const fn as_ptr(&self) -> NonNull<T::Target> {
-        self.borrow().ptr
+    pub(super) const fn as_mut(&mut self) -> UninitMut<'_, T::Target> {
+        self.borrow_mut().as_mut()
     }
     #[inline]
     const fn take_once(&mut self) -> UninitBoxInner<T> {

@@ -1,6 +1,7 @@
 //! Allocation trait and functions
 //!
-//! Depends on the [`cast`], [`fat_ptr`], [`layout`] and `container` module.
+//! Depends on the [`cast`], [`fat_ptr`], [`layout`], [`uninit`] and `container`
+//! module.
 //!
 //! The `container` module may be private.
 //!
@@ -12,12 +13,13 @@
 //! [`cast`]: crate::cast
 //! [`fat_ptr`]: crate::fat_ptr
 //! [`layout`]: crate::layout
+//! [`uninit`]: crate::uninit
 
-use core::{convert::Infallible, ptr::NonNull};
+use core::convert::Infallible;
 
 pub use self::funcs::alloc_for_slice_dst;
 use self::uninit_box::UninitBox;
-use crate::container::DstContainer;
+use crate::{container::DstContainer, uninit::UninitMut};
 
 mod funcs;
 mod uninit_box;
@@ -47,10 +49,10 @@ pub unsafe trait AllocSliceDst: DstContainer {
     #[inline]
     unsafe fn try_new_slice_dst<I, E>(len: usize, init: I) -> Result<Self, E>
     where
-        I: FnOnce(NonNull<Self::Target>) -> Result<(), E>,
+        I: FnOnce(UninitMut<'_, Self::Target>) -> Result<(), E>,
     {
-        let ptr = UninitBox::alloc_for_len(len);
-        init(ptr.as_ptr())?;
+        let mut ptr = UninitBox::alloc_for_len(len);
+        init(ptr.as_mut())?;
         Ok(ptr.finalize())
     }
     /// Create a new custom slice DST.
@@ -63,9 +65,9 @@ pub unsafe trait AllocSliceDst: DstContainer {
     #[inline]
     unsafe fn new_slice_dst<I>(len: usize, init: I) -> Self
     where
-        I: FnOnce(NonNull<Self::Target>),
+        I: FnOnce(UninitMut<'_, Self::Target>),
     {
-        let init = |ptr| {
+        let init = |ptr: UninitMut<'_, _>| {
             init(ptr);
             Ok::<(), Infallible>(())
         };
