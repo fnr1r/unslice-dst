@@ -11,8 +11,8 @@ fn acq_init_data() -> Box<[f32; 42]> {
 
 fn do_check_works<T: AllocSliceDst<Target = [f32]> + Deref<Target = [f32]>>() {
     let initial_data = acq_init_data();
-    let init = |mut ptr: UninitMut<'_, [f32]>| {
-        unsafe { ptr.as_mut() }.copy_from_slice(initial_data.as_ref());
+    let init = |ptr: UninitMut<'_, [f32]>| {
+        ptr.copy_from_slice(initial_data.as_ref());
     };
     let data = unsafe { T::new_slice_dst(42, init) };
     assert_eq!(*initial_data, *data);
