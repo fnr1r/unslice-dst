@@ -10,7 +10,7 @@ pub use self::funcs::{layout_for_len, layout_for_ptr};
 mod automatic;
 mod funcs;
 mod impls;
-mod manual;
+pub(crate) mod manual;
 
 #[cfg(test)]
 mod tests;

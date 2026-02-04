@@ -3,17 +3,36 @@ use core::alloc::{Layout, LayoutError};
 use super::DstLayout;
 use crate::{DstCast, dst_len};
 
-const fn layout_try_for_len<T: ?Sized + DstLayout>(len: usize) -> Result<Layout, LayoutError> {
-    let hlayout = Layout::new::<T::Head>();
-    let ilayout = match Layout::array::<T::Tail>(len) {
+#[allow(dead_code)]
+#[derive(Debug)]
+pub(crate) struct ManualLayout {
+    total_layout: Layout,
+    pub(crate) head_offset: usize,
+    head_layout: Layout,
+    pub(crate) tail_offset: usize,
+    tail_layout: Layout,
+}
+
+#[inline]
+pub(crate) const fn layout_try_for_len<T: ?Sized + DstLayout>(
+    len: usize,
+) -> Result<ManualLayout, LayoutError> {
+    let head_layout = Layout::new::<T::Head>();
+    let tail_layout = match Layout::array::<T::Tail>(len) {
         Ok(res) => res,
         Err(e) => return Err(e),
     };
-    let layout = match hlayout.extend(ilayout) {
-        Ok((res, _)) => res,
+    let (layout, tail_offset) = match head_layout.extend(tail_layout) {
+        Ok(res) => res,
         Err(e) => return Err(e),
     };
-    Ok(layout.pad_to_align())
+    Ok(ManualLayout {
+        total_layout: layout.pad_to_align(),
+        head_offset: 0,
+        head_layout,
+        tail_offset,
+        tail_layout,
+    })
 }
 
 /// Produces layout describing a record that could be used to allocate backing
@@ -22,7 +41,7 @@ const fn layout_try_for_len<T: ?Sized + DstLayout>(len: usize) -> Result<Layout,
 /// See [`Layout::for_value_raw`]
 pub(super) const fn layout_for_len<T: ?Sized + DstLayout>(len: usize) -> Layout {
     match layout_try_for_len::<T>(len) {
-        Ok(res) => res,
+        Ok(res) => res.total_layout,
         Err(_) => panic!("layout doesn't fit"),
     }
 }
