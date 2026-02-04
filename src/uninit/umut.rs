@@ -5,7 +5,10 @@ use core::{
     ptr::NonNull,
 };
 
-use crate::cast::dst_cast_nonnull;
+use crate::{
+    cast::dst_cast_nonnull,
+    utils::slice::{slice_as_uninit, slice_assume_init_mut},
+};
 
 /// [NonNull] but mut and valid for a set lifetime.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -53,5 +56,22 @@ impl<'a, T> UninitMut<'a, [T]> {
     pub const fn into_canonical(self) -> &'a mut [MaybeUninit<T>] {
         // SAFETY: The pointer is valid
         unsafe { dst_cast_nonnull(self.0).as_mut() }
+    }
+    /// Initialize the [`slice`] from the passed [`slice`].
+    ///
+    /// Returns a valid reference to the newly initialized value.
+    ///
+    /// This is a common enough operation to warrant an implementation.
+    ///
+    /// [`slice`]: primitive@slice
+    #[inline]
+    pub fn copy_from_slice(self, src: &[T]) -> &'a mut [T]
+    where
+        T: Copy,
+    {
+        let this = self.into_canonical();
+        this.copy_from_slice(slice_as_uninit(src));
+        // SAFETY: this is initialized by the above call
+        unsafe { slice_assume_init_mut(this) }
     }
 }
