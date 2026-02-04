@@ -1,9 +1,4 @@
-use core::{
-    marker::PhantomData,
-    mem::{MaybeUninit, transmute},
-    ops::Deref,
-    ptr::NonNull,
-};
+use core::{marker::PhantomData, mem::MaybeUninit, ops::Deref, ptr::NonNull};
 
 use crate::cast::dst_cast_nonnull;
 
@@ -19,7 +14,7 @@ impl<'a, T: ?Sized> Deref for UninitRef<'a, T> {
     type Target = NonNull<T>;
     #[inline]
     fn deref(&self) -> &Self::Target {
-        unsafe { transmute(self) }
+        &self.0
     }
 }
 

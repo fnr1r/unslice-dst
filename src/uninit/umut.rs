@@ -1,6 +1,6 @@
 use core::{
     marker::PhantomData,
-    mem::{MaybeUninit, transmute},
+    mem::MaybeUninit,
     ops::{Deref, DerefMut},
     ptr::NonNull,
 };
@@ -19,14 +19,14 @@ impl<'a, T: ?Sized> Deref for UninitMut<'a, T> {
     type Target = NonNull<T>;
     #[inline]
     fn deref(&self) -> &Self::Target {
-        unsafe { transmute::<&Self, &NonNull<T>>(self) }
+        &self.0
     }
 }
 
 impl<'a, T: ?Sized> DerefMut for UninitMut<'a, T> {
     #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
-        unsafe { transmute::<&mut Self, &mut NonNull<T>>(self) }
+        &mut self.0
     }
 }
 
