@@ -23,3 +23,10 @@ impl<'a, T: ?Sized> DerefMut for UninitMut<'a, T> {
         &mut self.0
     }
 }
+
+impl<'a, T: ?Sized> UninitMut<'a, T> {
+    #[inline]
+    pub(crate) const unsafe fn new(ptr: NonNull<T>) -> Self {
+        Self(ptr, PhantomData)
+    }
+}
