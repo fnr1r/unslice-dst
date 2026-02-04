@@ -1,6 +1,6 @@
 //! Fat pointer utils for slice-like DSTs
 //!
-//! Depends on the casting, fat_ptr and layout module.
+//! Depends on the casting, fat_ptr, layout and uninit modules.
 
 use core::convert::Infallible;
 
