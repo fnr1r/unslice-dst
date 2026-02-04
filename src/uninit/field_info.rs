@@ -3,6 +3,11 @@ use core::{marker::PhantomData, ptr::NonNull};
 use crate::{DstCast, cast::dst_cast_nonnull};
 
 /// Field metadata for parent type `T`
+///
+/// # TODO
+///
+/// - How to handle DSTs with different offsets per length? Unless I add an
+///   variant ref I can't enforce the usage of this type for the allocation.
 #[derive(Debug)]
 pub struct FieldInfo<T: ?Sized, U: ?Sized> {
     offset: usize,
