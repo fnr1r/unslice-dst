@@ -1,6 +1,17 @@
-//! Fat pointer utils for slice-like DSTs
+//! Allocation trait and functions
 //!
-//! Depends on the casting, fat_ptr and layout module.
+//! Depends on the [`cast`], [`fat_ptr`], [`layout`] and `container` module.
+//!
+//! The `container` module may be private.
+//!
+//! # TODO
+//!
+//! - Add fallible allocation APIs... someday.
+//! - Add a custom initializer type, which would be unsafe to call and create.
+//!
+//! [`cast`]: crate::cast
+//! [`fat_ptr`]: crate::fat_ptr
+//! [`layout`]: crate::layout
 
 use core::{convert::Infallible, ptr::NonNull};
 
@@ -14,12 +25,8 @@ mod uninit_box;
 #[cfg(test)]
 mod tests;
 
-/// Types that can allocate a custom slice DST within them,
-/// given a fallible initialization function.
-///
-/// # TODO
-///
-/// Fallible allocation APIs... someday.
+/// Types that can allocate a custom slice DST within them, given a fallible
+/// initialization function.
 ///
 /// # Safety
 ///
@@ -29,13 +36,14 @@ pub unsafe trait AllocSliceDst: DstContainer {
     ///
     /// # Safety
     ///
-    /// `init` must properly initialize the object behind the pointer.
-    /// `init` receives a fully uninitialized pointer and must not read anything before writing.
+    /// - `init` must properly initialize the object behind the pointer.
+    /// - `init` receives a fully uninitialized pointer and must not read
+    ///   anything before writing.
     ///
-    /// If the initialization closure panics or returns an error,
-    /// the allocated place will be deallocated but not dropped.
-    /// To clean up the partially initialized type, we suggest
-    /// proxying creation through scope guarding types.
+    /// If the initialization closure panics or returns an error, the allocated
+    /// place will be deallocated but not dropped. To clean up the partially
+    /// initialized type, we suggest proxying creation through scope guarding
+    /// types.
     #[inline]
     unsafe fn try_new_slice_dst<I, E>(len: usize, init: I) -> Result<Self, E>
     where
@@ -49,8 +57,9 @@ pub unsafe trait AllocSliceDst: DstContainer {
     ///
     /// # Safety
     ///
-    /// `init` must properly initialize the object behind the pointer.
-    /// `init` receives a fully uninitialized pointer and must not read anything before writing.
+    /// - `init` must properly initialize the object behind the pointer.
+    /// - `init` receives a fully uninitialized pointer and must not read
+    ///   anything before writing.
     #[inline]
     unsafe fn new_slice_dst<I>(len: usize, init: I) -> Self
     where

@@ -1,4 +1,4 @@
-//! This is the official way to make an Rc pointer - by converting it from a
+//! This is the official way to make an `Rc` pointer - by converting it from a
 //! [`Box`]. Expect an optimized version.
 
 use alloc::{boxed::Box, rc::Rc, sync::Arc};

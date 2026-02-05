@@ -32,18 +32,18 @@ where
 
 /// Allocates space for a DST on the heap using the system allocator.
 ///
-/// This function uses the [alloc] allocator, which means the memory can be
-/// deallocated with [dealloc] or any smart pointer using the `System`
+/// This function uses the [`alloc`] allocator, which means the memory can be
+/// deallocated with [`dealloc`] or any smart pointer using the `System`
 /// allocator.
 ///
 /// # Notes
 ///
-/// This function returns a [NonNull] pointer, because [MaybeUninit] does not
-/// support [?Sized] types.
+/// This function returns a [`NonNull`] pointer, because [`MaybeUninit`] does
+/// not support [?Sized] types.
 ///
-/// [MaybeUninit]: core::mem::MaybeUninit
-/// [alloc]: alloc::alloc::alloc
-/// [dealloc]: alloc::alloc::dealloc
+/// [`MaybeUninit`]: core::mem::MaybeUninit
+/// [`alloc`]: alloc::alloc::alloc
+/// [`dealloc`]: alloc::alloc::dealloc
 #[inline]
 pub fn alloc_for_slice_dst<T>(len: usize) -> NonNull<T>
 where

@@ -24,9 +24,9 @@ mod for_std {
 
     /// # Implementation notes
     ///
-    /// - On Windows, it's Wtf8, backed by slice of u8
+    /// - On Windows, it's Wtf8, backed by slice of [`u8`]
     /// - On Motor, it's Utf8, which doesn't matter for us
-    /// - Otherwise, it's just a slice of u8
+    /// - Otherwise, it's just a slice of [`u8`]
     unsafe impl DstLayout for OsStr {
         type Head = ();
         type Tail = u8;

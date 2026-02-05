@@ -1,6 +1,6 @@
-//! An implementation utilizing Undefined Behaviour
+//! An implementation utilizing Undefined Behavior
 //!
-//! This requires casting and fat_ptr.
+//! This requires [`cast`](crate::cast) and [`fat_ptr`](crate::fat_ptr).
 
 use core::alloc::Layout;
 
@@ -54,7 +54,7 @@ where
 ///
 /// # Warning
 ///
-/// This function utilizes the following Undefined Behaviour:
+/// This function utilizes the following Undefined Behavior:
 ///
 /// - creates a NULL reference
 /// - passes the NULL reference to [`Layout::for_value`]

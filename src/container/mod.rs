@@ -1,6 +1,6 @@
 //! Smart pointer compatibility trait
 //!
-//! Depends on `alloc` (crate).
+//! Depends on [`alloc`] (crate) and [`cast`](crate::cast).
 //!
 //! See [`DstContainer`] for more.
 

@@ -40,8 +40,8 @@ pub type AnyDst = [()];
 
 /// Trait alias for every slice-like DST
 ///
-/// Automatically implemented for every type which implements [DstCast] and
-/// [DstLayout]
+/// Automatically implemented for every type which implements [`DstCast`] and
+/// [`DstLayout`]
 pub trait SliceDst: DstCast + MaybeDstLayout {}
 
 impl<T: ?Sized + DstCast + MaybeDstLayout> SliceDst for T {}

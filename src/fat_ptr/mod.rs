@@ -1,6 +1,6 @@
 //! Fat pointer utils for slice-like DSTs
 //!
-//! Depends on the casting module.
+//! Depends on the [`cast`](crate::cast) module.
 
 use self::slice_dst_pointer::Inner;
 pub use self::{pointer_with::PointerWith, slice_dst_pointer::SliceDstPointer};
