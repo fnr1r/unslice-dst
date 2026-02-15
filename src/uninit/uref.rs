@@ -12,7 +12,7 @@ use crate::cast::dst_cast_nonnull;
 ///
 /// Not very useful. Not valid for reads (unless you can assume otherwhise) or
 /// writes.
-#[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct UninitRef<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a T>);
 
@@ -31,6 +31,16 @@ impl<'a, T: ?Sized> Clone for UninitRef<'a, T> {
         *self
     }
 }
+
+impl<'a, T: ?Sized> PartialEq for UninitRef<'a, T> {
+    #[allow(ambiguous_wide_pointer_comparisons)]
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        self.0.eq(&other.0)
+    }
+}
+
+impl<'a, T: ?Sized> Eq for UninitRef<'a, T> {}
 
 impl<'a, T: ?Sized> Deref for UninitRef<'a, T> {
     type Target = NonNull<T>;

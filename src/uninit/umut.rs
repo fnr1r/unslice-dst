@@ -12,7 +12,7 @@ use crate::{
 };
 
 /// [NonNull] but mut and valid for a set lifetime.
-#[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct UninitMut<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a mut T>);
 
@@ -31,6 +31,16 @@ impl<'a, T: ?Sized> Clone for UninitMut<'a, T> {
         *self
     }
 }
+
+impl<'a, T: ?Sized> PartialEq for UninitMut<'a, T> {
+    #[allow(ambiguous_wide_pointer_comparisons)]
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        self.0.eq(&other.0)
+    }
+}
+
+impl<'a, T: ?Sized> Eq for UninitMut<'a, T> {}
 
 impl<'a, T: ?Sized> Deref for UninitMut<'a, T> {
     type Target = NonNull<T>;
