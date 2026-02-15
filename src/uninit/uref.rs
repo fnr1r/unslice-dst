@@ -1,4 +1,5 @@
 use core::{
+    cmp::Ordering,
     fmt::{Debug, Formatter, Pointer, Result as FmtResult},
     marker::PhantomData,
     mem::MaybeUninit,
@@ -12,7 +13,6 @@ use crate::cast::dst_cast_nonnull;
 ///
 /// Not very useful. Not valid for reads (unless you can assume otherwhise) or
 /// writes.
-#[derive(PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct UninitRef<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a T>);
 
@@ -41,6 +41,22 @@ impl<'a, T: ?Sized> PartialEq for UninitRef<'a, T> {
 }
 
 impl<'a, T: ?Sized> Eq for UninitRef<'a, T> {}
+
+impl<'a, T: ?Sized> PartialOrd for UninitRef<'a, T> {
+    #[allow(ambiguous_wide_pointer_comparisons)]
+    #[inline]
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.0.partial_cmp(&other.0)
+    }
+}
+
+impl<'a, T: ?Sized> Ord for UninitRef<'a, T> {
+    #[allow(ambiguous_wide_pointer_comparisons)]
+    #[inline]
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.0.cmp(&other.0)
+    }
+}
 
 impl<'a, T: ?Sized> Deref for UninitRef<'a, T> {
     type Target = NonNull<T>;
