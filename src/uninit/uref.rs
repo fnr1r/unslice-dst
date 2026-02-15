@@ -6,9 +6,18 @@ use crate::cast::dst_cast_nonnull;
 ///
 /// Not very useful. Not valid for reads (unless you can assume otherwhise) or
 /// writes.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct UninitRef<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a T>);
+
+impl<'a, T: ?Sized> Copy for UninitRef<'a, T> {}
+
+impl<'a, T: ?Sized> Clone for UninitRef<'a, T> {
+    #[inline]
+    fn clone(&self) -> Self {
+        *self
+    }
+}
 
 impl<'a, T: ?Sized> Deref for UninitRef<'a, T> {
     type Target = NonNull<T>;

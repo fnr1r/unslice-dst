@@ -11,9 +11,18 @@ use crate::{
 };
 
 /// [NonNull] but mut and valid for a set lifetime.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct UninitMut<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a mut T>);
+
+impl<'a, T: ?Sized> Copy for UninitMut<'a, T> {}
+
+impl<'a, T: ?Sized> Clone for UninitMut<'a, T> {
+    #[inline]
+    fn clone(&self) -> Self {
+        *self
+    }
+}
 
 impl<'a, T: ?Sized> Deref for UninitMut<'a, T> {
     type Target = NonNull<T>;
