@@ -1,4 +1,10 @@
-use core::{marker::PhantomData, mem::MaybeUninit, ops::Deref, ptr::NonNull};
+use core::{
+    fmt::{Debug, Formatter, Pointer, Result as FmtResult},
+    marker::PhantomData,
+    mem::MaybeUninit,
+    ops::Deref,
+    ptr::NonNull,
+};
 
 use crate::cast::dst_cast_nonnull;
 
@@ -6,9 +12,16 @@ use crate::cast::dst_cast_nonnull;
 ///
 /// Not very useful. Not valid for reads (unless you can assume otherwhise) or
 /// writes.
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct UninitRef<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a T>);
+
+impl<'a, T: ?Sized> Debug for UninitRef<'a, T> {
+    #[inline]
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+        Pointer::fmt(&self, f)
+    }
+}
 
 impl<'a, T: ?Sized> Copy for UninitRef<'a, T> {}
 

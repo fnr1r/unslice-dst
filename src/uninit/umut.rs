@@ -1,4 +1,5 @@
 use core::{
+    fmt::{Debug, Formatter, Pointer, Result as FmtResult},
     marker::PhantomData,
     mem::MaybeUninit,
     ops::{Deref, DerefMut},
@@ -11,9 +12,16 @@ use crate::{
 };
 
 /// [NonNull] but mut and valid for a set lifetime.
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct UninitMut<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a mut T>);
+
+impl<'a, T: ?Sized> Debug for UninitMut<'a, T> {
+    #[inline]
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+        Pointer::fmt(&self, f)
+    }
+}
 
 impl<'a, T: ?Sized> Copy for UninitMut<'a, T> {}
 
