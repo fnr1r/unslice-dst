@@ -11,7 +11,7 @@ use crate::{
 ///
 /// Unlike other DSTs, this can be easily stored on the stack, since the 2nd
 /// field is a ZST. Although the compiler doesn't let me set the repr to
-/// `transparent`, since [`AnyDst`] is [`?Sized`].
+/// `transparent`, since [`AnyDst`] is [`?Sized`](Sized).
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(C)]
 pub struct MockDst<T>(pub T, AnyDst);
