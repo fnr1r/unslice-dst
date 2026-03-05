@@ -1,5 +1,12 @@
-use core::mem::offset_of;
+//! See [`SliceWithHeader`]
 
+use core::{
+    marker::PhantomData,
+    mem::offset_of,
+    ops::{Deref, DerefMut},
+};
+
+pub use self::config::*;
 use crate::{
     AllocSliceDst, DstLayout, dst_cast_impl,
     initializers::{
@@ -9,16 +16,19 @@ use crate::{
     utils::const_utils::{size_round_up, usize_max},
 };
 
+mod config;
+
 /// Generic slice-like DST
 #[allow(missing_docs)]
 #[derive(Debug)]
 #[repr(C)]
-pub struct SliceWithHeader<H, I> {
+pub struct SliceWithHeader<H, I, C = ()> {
+    _config: PhantomData<C>,
     pub header: H,
     pub slice: [I],
 }
 
-impl<H, I> SliceWithHeader<H, I> {
+impl<H, I, C> SliceWithHeader<H, I, C> {
     const HEAD_OFFSET: usize = offset_of!(Self, header);
     const TAIL_OFFSET: usize = {
         let align = usize_max(align_of::<H>(), align_of::<I>());
@@ -26,7 +36,7 @@ impl<H, I> SliceWithHeader<H, I> {
     };
 }
 
-impl<H, I> SliceWithHeader<H, I> {
+impl<H, I, C> SliceWithHeader<H, I, C> {
     /// Create a new initializer
     unsafe fn new_init(header: H, init_tail: impl InitTail<Self>) -> impl InitDst<Self> {
         unsafe { Self::initialize_for(write_fn(header), init_tail) }
@@ -69,14 +79,29 @@ impl<H, I> SliceWithHeader<H, I> {
     }
 }
 
-dst_cast_impl!(<H, I> for SliceWithHeader<H, I>);
+impl<H, I, C: SliceWithHeaderDerefEnable<H, I>> Deref for SliceWithHeader<H, I, C> {
+    type Target = C::DerefTarget;
+    #[inline]
+    fn deref(&self) -> &Self::Target {
+        C::deref_impl(self)
+    }
+}
 
-unsafe impl<H, I> DstLayout for SliceWithHeader<H, I> {
+impl<H, I, C: SliceWithHeaderDerefMutEnable<H, I>> DerefMut for SliceWithHeader<H, I, C> {
+    #[inline]
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        C::deref_mut_impl(self)
+    }
+}
+
+dst_cast_impl!(<H, I, C> for SliceWithHeader<H, I, C>);
+
+unsafe impl<H, I, C> DstLayout for SliceWithHeader<H, I, C> {
     type Head = H;
     type Tail = I;
 }
 
-unsafe impl<H, I> SliceDstSaferInit for SliceWithHeader<H, I> {
+unsafe impl<H, I, C> SliceDstSaferInit for SliceWithHeader<H, I, C> {
     #[inline]
     fn head_offset(_this: UninitRef<'_, Self>) -> usize {
         Self::HEAD_OFFSET
