@@ -10,6 +10,13 @@ pub(crate) const fn slice_from_raw_parts_nonnull<T>(data: NonNull<T>, len: usize
     unsafe { NonNull::new_unchecked(ptr) }
 }
 
+/// Coerce a [`slice`] of `T` into an uninitialized one
+///
+/// # Safety
+///
+/// The transmute in the function is safe because the `repr` remains the same.
+///
+/// [`slice`]: primitive@slice
 #[inline]
 pub(crate) const fn slice_as_uninit<T>(this: &[T]) -> &[MaybeUninit<T>] {
     // SAFETY: MaybeUninit is repr(transparent) and never written to
