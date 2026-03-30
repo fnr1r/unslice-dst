@@ -14,6 +14,13 @@ use crate::{
 };
 
 /// [`NonNull`] but mut and valid for a set lifetime.
+///
+/// # Note
+///
+/// If this pointer is written to again, the previous value WILL NOT be dropped.
+/// I only realized this after I finalized the API.
+///
+/// TODO: Fix this later. Fix it and rename to `MaybeUninitXXX`.
 #[repr(transparent)]
 pub struct UninitMut<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a mut T>);
 
