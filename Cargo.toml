@@ -9,7 +9,7 @@ readme = "README.md"
 repository = "https://github.com/fnr1r/unslice-dst"
 license = "MIT OR Apache-2.0"
 keywords = ["dst", "slice", "type", "unsized"]
-categories = ["no-std", "rust-patterns"]
+categories = ["data-structures", "no-std", "rust-patterns"]
 
 [dependencies]
 
