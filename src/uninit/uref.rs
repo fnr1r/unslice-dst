@@ -9,9 +9,9 @@ use core::{
 
 use crate::cast::dst_cast_nonnull;
 
-/// [NonNull] but valid for a set lifetime.
+/// [`NonNull`] but valid for a set lifetime.
 ///
-/// Not very useful. Not valid for reads (unless you can assume otherwhise) or
+/// Not very useful. Not valid for reads (unless you can assume otherwise) or
 /// writes.
 #[repr(transparent)]
 pub struct UninitRef<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a T>);

@@ -66,7 +66,8 @@ impl<H, I> SliceWithHeader<H, I> {
         let init_tail = write_slice_iter_fn(items);
         unsafe { Self::from_raw_tail_init(header, len, init_tail) }
     }
-    /// Create a new slice/header DST from a slice, in a [`AllocSliceDst`] container.
+    /// Create a new slice/header DST from a slice, in a [`AllocSliceDst`]
+    /// container.
     #[allow(clippy::new_ret_no_self)]
     pub fn from_slice_copy<A>(header: H, s: &[I]) -> A
     where

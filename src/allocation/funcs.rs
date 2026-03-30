@@ -18,7 +18,7 @@ where
     (layout, dst_from_raw_parts_nonnull(ptr, len))
 }
 
-/// [alloc_for_slice_dst] but with support for custom allocators
+/// [`alloc_for_slice_dst`] but with support for custom allocators
 ///
 /// TODO: allocator trait support
 #[inline]

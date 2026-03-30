@@ -13,7 +13,7 @@ use crate::{
     utils::slice::{slice_as_uninit, slice_assume_init_mut},
 };
 
-/// [NonNull] but mut and valid for a set lifetime.
+/// [`NonNull`] but mut and valid for a set lifetime.
 #[repr(transparent)]
 pub struct UninitMut<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a mut T>);
 
