@@ -1,6 +1,7 @@
 //! See [`SliceWithHeader`]
 
 use core::{
+    fmt::{Debug, Formatter, Result as FmtResult},
     marker::PhantomData,
     mem::offset_of,
     ops::{Deref, DerefMut},
@@ -20,12 +21,22 @@ mod config;
 
 /// Generic slice-like DST
 #[allow(missing_docs)]
-#[derive(Debug)]
 #[repr(C)]
 pub struct SliceWithHeader<H, I, C = ()> {
     _config: PhantomData<C>,
     pub header: H,
     pub slice: [I],
+}
+
+impl<H: Debug, I: Debug, C> Debug for SliceWithHeader<H, I, C> {
+    #[inline]
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+        f.debug_struct("SliceWithHeader")
+            .field("_config", &self._config)
+            .field("header", &self.header)
+            .field("slice", &&self.slice)
+            .finish()
+    }
 }
 
 impl<H, I, C> SliceWithHeader<H, I, C> {
