@@ -1,3 +1,5 @@
+//! all of these methods should be optimized away by LLVM into a no-op
+//!
 //! WTF, clippy? We are not dereferencing pointers.
 
 use core::ptr::{NonNull, slice_from_raw_parts, slice_from_raw_parts_mut};
