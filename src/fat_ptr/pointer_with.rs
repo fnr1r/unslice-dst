@@ -9,3 +9,14 @@ pub struct PointerWith<T> {
     /// For slices it's [`usize`].
     pub metadata: T,
 }
+
+impl<T: Copy> PointerWith<T> {
+    #[inline]
+    pub(super) const fn from_raw_parts(address: *const (), metadata: T) -> Self {
+        Self { address, metadata }
+    }
+    #[inline]
+    pub(super) const fn into_raw_parts(self) -> (*const (), T) {
+        (self.address, self.metadata)
+    }
+}

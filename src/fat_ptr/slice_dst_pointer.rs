@@ -5,7 +5,7 @@ use core::{
 };
 
 use super::PointerWith;
-use crate::{AnyDst, DstCast, utils::transmute_lax};
+use crate::{AnyDst, DstCast, cast::{dst_into_raw_parts, dst_from_raw_parts}};
 
 pub(super) type Inner = PointerWith<usize>;
 
@@ -26,9 +26,14 @@ impl SliceDstPointer {
     }
     /// Creates a [`SliceDstPointer`] from an address and metadata
     #[inline]
-    pub const fn from_raw_parts<T>(address: *const T, metadata: usize) -> Self {
-        let address = address.cast();
-        Self(PointerWith { address, metadata })
+    pub const fn from_raw_parts<T>(ptr: *const T, len: usize) -> Self {
+        Self(Inner::from_raw_parts(ptr.cast(), len))
+    }
+    /// Splits a [`SliceDstPointer`] into an address and metadata
+    #[inline]
+    pub const fn into_raw_parts<T>(self) -> (*const T, usize) {
+        let (ptr, len) = self.0.into_raw_parts();
+        (ptr.cast(), len)
     }
     /// Extracts the inner value
     #[inline]
@@ -45,13 +50,10 @@ impl SliceDstPointer {
     ///
     /// In debug builds, panics if the size of `*const T` does not match the
     /// size of `SliceDstPointer`. This is an internal consistency check.
-    #[allow(clippy::not_unsafe_ptr_arg_deref)]
     #[inline]
     pub const fn from_ptr<T: ?Sized + DstCast>(ptr: *const T) -> Self {
-        debug_assert!(size_of::<*const T>() == size_of::<Self>());
-        // SAFETY: `DstCast` requires a fat pointer with usize metadata
-        let inner = unsafe { transmute_lax::<*const T, Inner>(ptr) };
-        Self::new(inner)
+        let (ptr, len) = dst_into_raw_parts(ptr);
+        Self::from_raw_parts::<()>(ptr, len)
     }
     /// Reconstructs a raw fat pointer to a DST from this [`SliceDstPointer`].
     ///
@@ -70,9 +72,8 @@ impl SliceDstPointer {
     /// size of `SliceDstPointer`. This is an internal consistency check.
     #[inline]
     pub const fn into_ptr<T: ?Sized + DstCast>(self) -> *const T {
-        debug_assert!(size_of::<*const T>() == size_of::<Self>());
-        // SAFETY: `DstCast` requires a fat pointer with usize metadata
-        unsafe { transmute_lax::<Inner, *const T>(self.into_inner()) }
+        let (ptr, len) = self.into_raw_parts::<()>();
+        dst_from_raw_parts(ptr, len)
     }
     /// Returns the number of elements in the slice.
     #[allow(clippy::len_without_is_empty)]
