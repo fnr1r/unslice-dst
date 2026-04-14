@@ -4,7 +4,8 @@ pub use self::{
     dst_cast::DstCast,
     funcs::{
         dst_cast_const, dst_cast_mut, dst_cast_nonnull, dst_from_raw_parts, dst_from_raw_parts_mut,
-        dst_from_raw_parts_nonnull,
+        dst_from_raw_parts_nonnull, dst_into_raw_parts, dst_into_raw_parts_mut,
+        dst_into_raw_parts_nonnull,
     },
 };
 pub use crate::dst_cast_impl;

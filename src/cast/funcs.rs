@@ -3,6 +3,8 @@
 use core::ptr::{NonNull, slice_from_raw_parts, slice_from_raw_parts_mut};
 
 use super::DstCast;
+#[cfg(doc)]
+use crate::AnyDst;
 use crate::utils::transmute_lax;
 
 /// [`DstCast::cast_dst_const`] but const
@@ -78,4 +80,40 @@ where
 {
     use crate::utils::slice::slice_from_raw_parts_nonnull;
     dst_cast_nonnull(slice_from_raw_parts_nonnull(data, len))
+}
+
+/// Split a [`DstCast`] into a raw pointer and length.
+///
+/// Internally, it converts the type into [`AnyDst`]
+#[inline]
+pub const fn dst_into_raw_parts<T, U>(ptr: *const T) -> (*const U, usize)
+where
+    T: ?Sized + DstCast,
+{
+    use crate::utils::slice::slice_into_raw_parts;
+    slice_into_raw_parts(dst_cast_const(ptr))
+}
+
+/// Split a [`DstCast`] into a raw mutable pointer and length.
+///
+/// Internally, it converts the type into [`AnyDst`]
+#[inline]
+pub const fn dst_into_raw_parts_mut<T, U>(ptr: *mut T) -> (*mut U, usize)
+where
+    T: ?Sized + DstCast,
+{
+    use crate::utils::slice::slice_into_raw_parts_mut;
+    slice_into_raw_parts_mut(dst_cast_mut(ptr))
+}
+
+/// Split a [`DstCast`] into a raw [`NonNull`] pointer and length.
+///
+/// Internally, it converts the type into [`AnyDst`]
+#[inline]
+pub const fn dst_into_raw_parts_nonnull<T, U>(ptr: NonNull<T>) -> (NonNull<U>, usize)
+where
+    T: ?Sized + DstCast,
+{
+    use crate::utils::slice::slice_into_raw_parts_nonnull;
+    slice_into_raw_parts_nonnull(dst_cast_nonnull(ptr))
 }

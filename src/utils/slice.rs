@@ -10,6 +10,21 @@ pub(crate) const fn slice_from_raw_parts_nonnull<T>(data: NonNull<T>, len: usize
     unsafe { NonNull::new_unchecked(ptr) }
 }
 
+#[inline]
+pub(crate) const fn slice_into_raw_parts<T>(ptr: *const [T]) -> (*const T, usize) {
+    (ptr.cast(), ptr.len())
+}
+
+#[inline]
+pub(crate) const fn slice_into_raw_parts_mut<T>(ptr: *mut [T]) -> (*mut T, usize) {
+    (ptr.cast(), ptr.len())
+}
+
+#[inline]
+pub(crate) const fn slice_into_raw_parts_nonnull<T>(ptr: NonNull<[T]>) -> (NonNull<T>, usize) {
+    (ptr.cast(), ptr.len())
+}
+
 /// Coerce a [`slice`] of `T` into an uninitialized one
 ///
 /// # Safety
