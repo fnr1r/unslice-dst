@@ -5,7 +5,10 @@ use core::{
 };
 
 use super::PointerWith;
-use crate::{AnyDst, DstCast, cast::{dst_into_raw_parts, dst_from_raw_parts}};
+use crate::{
+    AnyDst, DstCast,
+    cast::{dst_from_raw_parts, dst_into_raw_parts},
+};
 
 pub(super) type Inner = PointerWith<usize>;
 
