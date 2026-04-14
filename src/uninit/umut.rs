@@ -15,12 +15,15 @@ use crate::{
 
 /// [`NonNull`] but mut and valid for a set lifetime.
 ///
-/// # Note
+/// Unlike the previous version, this once:
 ///
-/// If this pointer is written to again, the previous value WILL NOT be dropped.
-/// I only realized this after I finalized the API.
+/// - fixed aliasing issues (caused previously by [`Clone`] and [`Copy`])
+/// - fixed [`Drop`] issues (now safe Rust only allows one write)
 ///
-/// TODO: Fix this later. Fix it and rename to `MaybeUninitXXX`.
+/// # Notes
+///
+/// A general API rule for this struct is: any call that allows mutation
+/// consumes `self`.
 #[repr(transparent)]
 pub struct UninitMut<'a, T: ?Sized>(NonNull<T>, PhantomData<&'a mut T>);
 
@@ -28,15 +31,6 @@ impl<'a, T: ?Sized> Debug for UninitMut<'a, T> {
     #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         Pointer::fmt(&self, f)
-    }
-}
-
-impl<'a, T: ?Sized> Copy for UninitMut<'a, T> {}
-
-impl<'a, T: ?Sized> Clone for UninitMut<'a, T> {
-    #[inline]
-    fn clone(&self) -> Self {
-        *self
     }
 }
 
@@ -86,14 +80,39 @@ impl<'a, T: ?Sized> UninitMut<'a, T> {
     pub(crate) const unsafe fn new(ptr: NonNull<T>) -> Self {
         Self(ptr, PhantomData)
     }
+    /// Copy [`Self`]
+    ///
+    /// This used to be a [`Clone`] and [`Copy`] impl, but that caused aliasing
+    /// issues.
+    ///
+    /// # Safety
+    ///
+    /// The caller must follow Rust reference rules. Since this method allows
+    /// for aliasing, only use it to, for example, create mutable references
+    /// into fields.
     #[inline]
-    pub(crate) const fn into_ref(self) -> UninitRef<'a, T> {
+    pub(crate) const unsafe fn ucopy(&self) -> Self {
+        unsafe { core::ptr::read(self) }
+    }
+    #[inline]
+    pub(crate) const fn as_uref<'b>(&'b self) -> UninitRef<'b, T> {
+        // SAFETY: self is borrowed immutably, so it can't be consumed by another
+        // function
         unsafe { UninitRef::new(self.0) }
     }
-    /// TODO: move this out
     #[inline]
-    pub(crate) const fn cast<U>(self) -> UninitMut<'a, U> {
+    pub(crate) const fn cast_sized<U>(self) -> UninitMut<'a, U> {
         unsafe { UninitMut::new(self.0.cast()) }
+    }
+    #[inline]
+    pub(crate) unsafe fn into_field<U: ?Sized>(
+        self,
+        offset_fn: impl FnOnce(UninitRef<'_, T>) -> usize,
+        cast_fn: impl FnOnce(NonNull<T>) -> NonNull<U>,
+    ) -> UninitMut<'a, U> {
+        let offset = offset_fn(self.as_uref());
+        let this = cast_fn(self.0);
+        unsafe { UninitMut::new(this.byte_add(offset)) }
     }
 }
 

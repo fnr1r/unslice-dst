@@ -1,5 +1,7 @@
 //! Private initializers API
 
+use core::ptr::NonNull;
+
 pub(crate) use self::{aliases::*, slice_from_iter::write_slice_iter_fn};
 use crate::{
     DstCast, DstLayout,
@@ -44,13 +46,9 @@ pub(crate) unsafe trait SliceDstSaferInit: DstCast + DstLayout {
     unsafe fn as_uninit(
         this: UninitMut<'_, Self>,
     ) -> (UninitMut<'_, Self::Head>, UninitMut<'_, [Self::Tail]>) {
-        let head_offset = Self::head_offset(this.into_ref());
-        let tail_offset = Self::tail_offset(this.into_ref());
-        let head_ptr = this.cast::<Self::Head>();
-        let head_ptr = unsafe { head_ptr.byte_add(head_offset) };
-        let tail_ptr = dst_cast_nonnull::<_, [Self::Tail]>(*this);
-        let tail_ptr = unsafe { tail_ptr.byte_add(tail_offset) };
-        unsafe { (UninitMut::new(head_ptr), UninitMut::new(tail_ptr)) }
+        let head = unsafe { this.ucopy().into_field(Self::head_offset, NonNull::cast) };
+        let tail = unsafe { this.into_field(Self::tail_offset, dst_cast_nonnull) };
+        (head, tail)
     }
     #[inline]
     unsafe fn initialize_for(

@@ -19,7 +19,7 @@ pub struct MockDst<T>(pub T, AnyDst);
 impl<T> MockDst<T> {
     #[inline]
     const fn dst_init(ptr: UninitMut<'_, Self>, value: T) {
-        ptr.cast::<T>().into_canonical().write(value);
+        ptr.cast_sized::<T>().into_canonical().write(value);
     }
     /// Allocate a new fake DST
     #[allow(clippy::new_ret_no_self)]
