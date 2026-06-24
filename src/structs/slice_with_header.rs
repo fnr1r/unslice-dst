@@ -47,7 +47,7 @@ impl<H, I, C> SliceWithHeader<H, I, C> {
     };
 }
 
-impl<H, I> SliceWithHeader<H, I> {
+impl<H, I, C> SliceWithHeader<H, I, C> {
     /// Create a new initializer
     unsafe fn new_init(header: H, init_tail: impl InitTail<Self>) -> impl InitDst<Self> {
         unsafe { Self::initialize_for(write_fn(header), init_tail) }
