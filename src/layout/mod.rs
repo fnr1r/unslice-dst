@@ -2,7 +2,8 @@
 //!
 //! Required for allocation.
 //!
-//! May depend on the [`cast`](crate::cast) module.
+//! Depends on the [`cast`](crate::cast) module when `layout_automatic` is
+//! enabled.
 
 pub(crate) use self::funcs::MaybeDstLayout;
 pub use self::funcs::{layout_for_len, layout_for_ptr};

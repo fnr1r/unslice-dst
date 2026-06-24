@@ -23,6 +23,10 @@ mod impl_rc_with_box;
 ///
 /// See implementation for [`Box`].
 ///
+/// # TODO
+///
+/// Rework to allow for stack allocations.
+///
 /// [`Box`]: alloc::boxed::Box
 #[allow(clippy::missing_safety_doc)]
 pub unsafe trait DstContainer: Sized {

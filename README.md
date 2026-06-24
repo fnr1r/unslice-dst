@@ -5,6 +5,29 @@ A more flexible version of [slice-dst](https://crates.io/crates/slice-dst).
 
 Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_/¯
 
+## Goals
+
+- Have a simple-to-use macro for creating DSTs
+- Inline everything. And at least try to keep everything
+  [`const`](https://doc.rust-lang.org/std/keyword.const.html#compile-time-evaluable-functions).
+- Avoid required dependencies at all costs (extra, optional trait impls are fine)
+- Stay on lowest comfortable MSRV
+- (eventually) publish everything i still have in my local repo
+
+## Layers
+
+- Layer 1 - Missing stable Rust features
+  - [`cast`] - (limited) [`?Sized`] pointer casts
+  - [`uninit`] - uninitialized pointers (depends on [`cast`])
+  - [`layout`] - (limited) [`?Sized`] layouts (may depend on [`cast`])
+- Layer 2 - Adapters (depends on Layer 1)
+  - [`fat_ptr`] - fat pointer struct
+  - `initializers` - pre-written... initializers (private)
+    (depends on manual [`layout`] implementation)
+  - `container` - smart pointer traits (may be private)
+  - [`allocation`] - combines `container` with [`alloc`] (depends on `container`)
+- Layer 3 - Final types - [`structs`] (depends on everything else)
+
 ## Features
 
 ### without std / safe
@@ -38,3 +61,5 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
 - `std_ffi_cstr_impl` - same as `core_ffi_cstr_impl`, but for
   [`std::ffi::CStr`]  
   WARNING: Same issues as `core_ffi_cstr_impl` apply.
+
+[`?Sized`]: core::marker::Sized

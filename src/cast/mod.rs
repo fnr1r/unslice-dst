@@ -1,4 +1,7 @@
 //! Support for casting slice-like DSTs
+//!
+//! Exists only because stable Rust forbids as-casts between `?Sized` pointers
+//! (except for concrete and compatible types)
 
 pub use self::{
     dst_cast::DstCast,
