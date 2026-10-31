@@ -30,6 +30,9 @@ std_ffi_cstr_impl = ["std"]
 
 plain = ["dep:plain"]
 
+[lints]
+workspace = true
+
 [workspace.lints.rust]
 unsafe_op_in_unsafe_fn = "deny"
 
