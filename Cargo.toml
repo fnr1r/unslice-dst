@@ -1,32 +1,49 @@
-[package]
-name = "unslice-dst"
-version = "0.3.3"
+[workspace]
+members = ["crates/cast", "."]
+resolver = "3"
+
+[workspace.package]
 authors = ["fnrir"]
 edition = "2024"
 rust-version = "1.85"
-description = "Fancy slice-like DST support"
-readme = "README.md"
 repository = "https://github.com/fnr1r/unslice-dst"
 license = "MIT OR Apache-2.0"
+
+[workspace.dependencies.unslice-dst-cast]
+version = "0.1"
+path = "crates/cast"
+default-features = false
+
+[package]
+name = "unslice-dst"
+version = "0.4.0"
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "Fancy slice-like DST support"
+readme = "README.md"
+repository.workspace = true
+license.workspace = true
 keywords = ["dst", "slice", "type", "unsized"]
 categories = ["data-structures", "no-std", "rust-patterns"]
 
 [dependencies]
 plain = { version = "0.2", optional = true }
+unslice-dst-cast.workspace = true
 
 [features]
 default = ["cast_macro_tt_muncher", "std"]
 
-cast_macro_tt_muncher = []
+cast_macro_tt_muncher = ["unslice-dst-cast/macro_tt_muncher"]
 
-cast_unseal = []
+cast_unseal = ["unslice-dst-cast/unseal"]
 container_rc_optimize = []
 container_unseal = []
-core_ffi_cstr_impl = []
+core_ffi_cstr_impl = ["unslice-dst-cast/core_ffi_cstr_impl"]
 layout_automatic = ["cast_macro_tt_muncher"]
 
-std = ["cast_macro_tt_muncher"]
-std_ffi_cstr_impl = ["std"]
+std = ["unslice-dst-cast/std"]
+std_ffi_cstr_impl = ["std", "unslice-dst-cast/std_ffi_cstr_impl"]
 
 plain = ["dep:plain"]
 

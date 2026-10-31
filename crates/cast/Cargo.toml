@@ -1,0 +1,27 @@
+[package]
+name = "unslice-dst-cast"
+version = "0.1.0"
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "Slice-like DST casting support"
+repository.workspace = true
+license.workspace = true
+keywords = ["dst", "slice", "type", "unsized"]
+categories = ["no-std", "rust-patterns"]
+
+[dependencies]
+
+[features]
+default = ["macro_tt_muncher", "std"]
+
+macro_tt_muncher = []
+
+core_ffi_cstr_impl = []
+unseal = []
+
+std = ["macro_tt_muncher"]
+std_ffi_cstr_impl = ["std"]
+
+[lints]
+workspace = true

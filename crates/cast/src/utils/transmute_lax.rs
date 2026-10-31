@@ -20,7 +20,7 @@ union TransmuteLax<A, B> {
 ///
 /// [`transmute`]: core::mem::transmute
 #[inline]
-pub(crate) const unsafe fn transmute_lax<A, B>(src: A) -> B {
+pub const unsafe fn transmute_lax<A, B>(src: A) -> B {
     debug_assert!(size_of::<A>() == size_of::<B>());
     debug_assert!(align_of::<A>() == align_of::<B>());
     let a = ManuallyDrop::new(src);

@@ -4,8 +4,6 @@
 
 use core::{alloc::Layout, ptr::null};
 
-#[cfg(not(miri))]
-use crate::utils::transmute_lax;
 use crate::{DstCast, cast::dst_from_raw_parts};
 
 const FAKE_ADDR: *const () = null();
@@ -20,6 +18,7 @@ const unsafe fn raw_pointer_to_reference_ignoring_ub<'a, T>(v: *const T) -> &'a 
 where
     T: ?Sized + DstCast,
 {
+    use unslice_dst_cast::utils::transmute_lax;
     unsafe { transmute_lax::<*const T, &T>(v) }
 }
 

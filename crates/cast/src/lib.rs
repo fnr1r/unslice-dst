@@ -11,14 +11,20 @@ pub use self::{
         dst_into_raw_parts_nonnull,
     },
 };
-pub use crate::dst_cast_impl;
 
 mod dst_cast;
 mod funcs;
 mod impls;
 mod macros;
-#[cfg_attr(not(feature = "cast_unseal"), doc(hidden))]
+#[cfg_attr(not(feature = "unseal"), doc(hidden))]
 pub mod sealed;
+#[doc(hidden)]
+pub mod utils;
 
 #[cfg(test)]
 mod tests;
+
+/// Just a type alias for a slice of units.
+///
+/// It's assumed to always be of size 0.
+pub type AnyDst = [()];

@@ -3,6 +3,8 @@
 
 extern crate alloc;
 
+pub use unslice_dst_cast::{self as cast, AnyDst, dst_cast_impl};
+
 use self::layout::MaybeDstLayout;
 pub use self::{
     allocation::{AllocSliceDst, alloc_for_slice_dst},
@@ -13,7 +15,6 @@ pub use self::{
 };
 
 pub mod allocation;
-pub mod cast;
 #[cfg(feature = "container_unseal")]
 pub mod container;
 #[cfg(not(feature = "container_unseal"))]
@@ -24,11 +25,6 @@ pub mod layout;
 pub mod structs;
 pub mod uninit;
 mod utils;
-
-/// Just a type alias for a slice of units.
-///
-/// It's assumed to always be of size 0.
-pub type AnyDst = [()];
 
 /// Trait alias for every slice-like DST
 ///
