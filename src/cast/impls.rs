@@ -1,3 +1,5 @@
+#![allow(clippy::absolute_paths)]
+
 use crate::dst_cast_impl;
 
 dst_cast_impl!(<T> for [T]);

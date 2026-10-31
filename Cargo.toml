@@ -29,3 +29,34 @@ std = ["cast_macro_tt_muncher"]
 std_ffi_cstr_impl = ["std"]
 
 plain = ["dep:plain"]
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+meta_variable_misuse = "deny"
+trivial_casts = "deny"
+
+missing_copy_implementations = "warn"
+missing_debug_implementations = "warn"
+
+unreachable_pub = "warn"
+
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+# restriction / use
+alloc_instead_of_core = "deny"
+std_instead_of_alloc = "deny"
+std_instead_of_core = "deny"
+
+# restriction / other
+absolute_paths = "warn"
+#undocumented_unsafe_blocks = "deny"
+unused_trait_names = "warn"
+
+# nursery / const
+missing_const_for_fn = "warn"
+# nursery / repr
+transmute_undefined_repr = "warn"
+# nursery / style
+use_self = "warn"

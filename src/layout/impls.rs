@@ -1,3 +1,5 @@
+#![allow(clippy::absolute_paths)]
+
 use super::DstLayout;
 
 unsafe impl<T> DstLayout for [T] {

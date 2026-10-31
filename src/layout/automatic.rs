@@ -2,13 +2,13 @@
 //!
 //! This requires [`cast`](crate::cast) and [`fat_ptr`](crate::fat_ptr).
 
-use core::alloc::Layout;
+use core::{alloc::Layout, ptr::null};
 
 #[cfg(not(miri))]
 use crate::utils::transmute_lax;
 use crate::{DstCast, cast::dst_from_raw_parts};
 
-const FAKE_ADDR: *const () = core::ptr::null();
+const FAKE_ADDR: *const () = null();
 
 /// Create a fake pointer to a slice-like DST
 const fn fake_ptr<T: ?Sized + DstCast>(len: usize) -> *const T {

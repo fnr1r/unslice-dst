@@ -4,7 +4,7 @@ use core::{
     marker::PhantomData,
     mem::MaybeUninit,
     ops::{Deref, DerefMut},
-    ptr::NonNull,
+    ptr::{NonNull, read},
 };
 
 use crate::{
@@ -92,7 +92,7 @@ impl<'a, T: ?Sized> UninitMut<'a, T> {
     /// into fields.
     #[inline]
     pub(crate) const unsafe fn ucopy(&self) -> Self {
-        unsafe { core::ptr::read(self) }
+        unsafe { read(self) }
     }
     #[inline]
     pub(crate) const fn as_uref<'b>(&'b self) -> UninitRef<'b, T> {
