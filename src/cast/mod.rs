@@ -16,10 +16,7 @@ pub use crate::dst_cast_impl;
 mod dst_cast;
 mod funcs;
 mod impls;
-#[cfg(not(feature = "cast_macro_tt_muncher"))]
-mod macro_simple;
-#[cfg(feature = "cast_macro_tt_muncher")]
-mod macro_tt_muncher;
+mod macros;
 #[cfg_attr(not(feature = "cast_unseal"), doc(hidden))]
 pub mod sealed;
 
