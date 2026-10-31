@@ -29,7 +29,7 @@ use super::sealed::Sealed;
 pub unsafe trait DstCast {
     /// Sealed type.
     ///
-    /// For more info, enable feature `casting_unseal`.
+    /// For more info, enable feature `unseal` or `cast_unseal`.
     const POINTER_SIZE_MATCHES_SLICE: Sealed<Self>;
 
     /// Cast a const pointer to a slice-like DST to a slice
