@@ -1,6 +1,5 @@
 #![doc = include_str!("../README.md")]
 #![cfg_attr(not(feature = "std"), no_std)]
-#![cfg_attr(miri, feature(layout_for_ptr))]
 
 extern crate alloc;
 
