@@ -2,6 +2,7 @@
 //!
 //! Exists only because stable Rust forbids as-casts between `?Sized` pointers
 //! (except for concrete and compatible types)
+#![cfg_attr(not(feature = "std"), no_std)]
 
 pub use self::{
     dst_cast::DstCast,
