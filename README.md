@@ -30,11 +30,11 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
 
 ## Features
 
-### without std / safe
+### no deps / safe
 
 - `cast_macro_tt` - uses a more flexible TT muncher macro
 
-### without std / unsafe
+### no deps / unsafe
 
 - `cast_unseal` - reveals the sealed type for manual implementation  
   WARNING: Please don't. If the macro doesn't work, your type likely isn't
@@ -43,14 +43,22 @@ Started because I wanted to save a `size_of::<usize>()` of memory. ¯\\\_(ツ)\_
   smart pointers
 - `container_rc_optimize` - optimize `(A)Rc` container allocations  
   WARNING: prone to ABI changes
+- `layout_automatic` - use the automatic layout implementation  
+  WARNING: relies on Undefined Behavior, namely creating a temporary null
+  reference, which shouldn't be read.  
+  Avoidable on nightly and MSRV `1.99` thanks to `layout_for_ptr` feature
+  ([`core::alloc::Layout::for_value_raw`]).
+
+### rustc
+
+- `layout_feature_layout_for_ptr` - use `layout_for_ptr`
+
+### core
+
 - `core_ffi_cstr_impl` - implements [`DstCast`] and [`DstLayout`] for
   [`core::ffi::CStr`] (requires Rust 1.64)  
   WARNING: The repr of `CStr` is not guaranteed! See the official [`core`] docs
   for more info.
-- `layout_automatic` - use the automatic layout implementation  
-  WARNING: relies on Undefined Behavior, namely creating a temporary null
-  reference, which shouldn't be read.  
-  Avoidable on nightly thanks to [`core::alloc::Layout::for_value_raw`].
 
 ### std
 

@@ -39,8 +39,11 @@ cast_macro_tt_muncher = ["unslice-dst-cast/macro_tt_muncher"]
 cast_unseal = ["unslice-dst-cast/unseal"]
 container_rc_optimize = []
 container_unseal = []
-core_ffi_cstr_impl = ["unslice-dst-cast/core_ffi_cstr_impl"]
 layout_automatic = ["cast_macro_tt_muncher"]
+
+feature_layout_for_ptr = []
+
+core_ffi_cstr_impl = ["unslice-dst-cast/core_ffi_cstr_impl"]
 
 std = ["unslice-dst-cast/std"]
 std_ffi_cstr_impl = ["std", "unslice-dst-cast/std_ffi_cstr_impl"]
