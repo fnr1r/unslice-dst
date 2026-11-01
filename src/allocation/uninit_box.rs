@@ -1,4 +1,4 @@
-use core::{marker::PhantomData, mem::ManuallyDrop, ptr::NonNull};
+use core::{mem::ManuallyDrop, ptr::NonNull};
 
 use crate::{
     cast::dst_from_raw_parts_nonnull, container::DstContainer, layout::layout_for_len,
@@ -19,17 +19,12 @@ const unsafe fn unwrap_invariant<T>(value: Option<T>, s: &str) -> T {
 pub(super) struct UninitBoxInner<T: DstContainer> {
     ptr: NonNull<T::Target>,
     context: T::Context,
-    container: PhantomData<T>,
 }
 
 impl<T: DstContainer> UninitBoxInner<T> {
     #[inline]
     const fn new(ptr: NonNull<T::Target>, context: T::Context) -> Self {
-        Self {
-            ptr,
-            context,
-            container: PhantomData,
-        }
+        Self { ptr, context }
     }
     #[inline]
     fn alloc_for_len(len: usize) -> Self {
