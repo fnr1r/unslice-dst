@@ -1,3 +1,5 @@
+use core::ptr::null;
+
 use super::{SliceDstPointer, dst_len};
 use crate::cast::{dst_cast_const, dst_cast_impl};
 
@@ -10,7 +12,7 @@ fn slice_test_data() -> SliceDstPointer {
 
 #[test]
 fn assert_slice_addr() {
-    assert_ne!(slice_test_data().address, core::ptr::null());
+    assert_ne!(slice_test_data().address, null());
 }
 
 #[test]
