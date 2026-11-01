@@ -3,7 +3,7 @@
 
 extern crate alloc;
 
-pub use unslice_dst_cast::{self as cast, AnyDst, dst_cast_impl};
+pub use unslice_dst_cast::{self as cast, AnyDst};
 
 use self::layout::MaybeDstLayout;
 pub use self::{
