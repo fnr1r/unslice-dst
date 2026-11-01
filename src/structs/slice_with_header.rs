@@ -9,10 +9,11 @@ use core::{
 
 #[cfg(feature = "plain")]
 use plain::Plain;
+use unslice_dst_cast::dst_cast_impl;
 
 pub use self::config::*;
 use crate::{
-    AllocSliceDst, DstLayout, dst_cast_impl,
+    AllocSliceDst, DstLayout,
     initializers::{
         InitDst, InitTail, SliceDstSaferInit, write_fn, write_slice_copied_fn, write_slice_iter_fn,
     },

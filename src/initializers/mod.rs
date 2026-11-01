@@ -2,10 +2,11 @@
 
 use core::ptr::NonNull;
 
+use unslice_dst_cast::{DstCast, dst_cast_nonnull};
+
 pub(crate) use self::{aliases::*, slice_from_iter::write_slice_iter_fn};
 use crate::{
-    DstCast, DstLayout,
-    cast::dst_cast_nonnull,
+    DstLayout,
     uninit::{UninitMut, UninitRef},
 };
 

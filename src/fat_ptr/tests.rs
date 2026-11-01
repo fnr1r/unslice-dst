@@ -1,7 +1,8 @@
 use core::ptr::null;
 
+use unslice_dst_cast::{dst_cast_const, dst_cast_impl};
+
 use super::{SliceDstPointer, dst_len};
-use crate::cast::{dst_cast_const, dst_cast_impl};
 
 const LEN: usize = 420;
 const DATA: &[u8] = &[12; LEN];

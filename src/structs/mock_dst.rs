@@ -1,11 +1,8 @@
 use core::ops::{Deref, DerefMut};
 
-use crate::{
-    AllocSliceDst, AnyDst, DstLayout,
-    cast::{dst_from_raw_parts, dst_from_raw_parts_mut},
-    dst_cast_impl,
-    uninit::UninitMut,
-};
+use unslice_dst_cast::{dst_cast_impl, dst_from_raw_parts, dst_from_raw_parts_mut};
+
+use crate::{AllocSliceDst, AnyDst, DstLayout, uninit::UninitMut};
 
 /// "Fake" DST
 ///

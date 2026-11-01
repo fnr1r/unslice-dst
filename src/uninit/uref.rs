@@ -7,7 +7,7 @@ use core::{
     ptr::NonNull,
 };
 
-use crate::cast::dst_cast_nonnull;
+use unslice_dst_cast::dst_cast_nonnull;
 
 /// [`NonNull`] but valid for a set lifetime.
 ///

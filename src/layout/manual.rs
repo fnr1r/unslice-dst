@@ -1,7 +1,9 @@
 use core::alloc::{Layout, LayoutError};
 
+use unslice_dst_cast::DstCast;
+
 use super::DstLayout;
-use crate::{DstCast, ctry, dst_len, utils::const_utils::unwrap_ok};
+use crate::{ctry, dst_len, utils::const_utils::unwrap_ok};
 
 const fn layout_try_for_len<T: ?Sized + DstLayout>(len: usize) -> Result<Layout, LayoutError> {
     let hlayout = Layout::new::<T::Head>();

@@ -4,11 +4,10 @@ use core::{
     ops::{Deref, DerefMut},
 };
 
+use unslice_dst_cast::{DstCast, dst_from_raw_parts, dst_into_raw_parts};
+
 use super::PointerWith;
-use crate::{
-    AnyDst, DstCast,
-    cast::{dst_from_raw_parts, dst_into_raw_parts},
-};
+use crate::AnyDst;
 
 pub(super) type Inner = PointerWith<usize>;
 

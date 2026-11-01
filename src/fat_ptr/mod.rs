@@ -2,9 +2,10 @@
 //!
 //! Depends on the [`cast`](crate::cast) module.
 
+use unslice_dst_cast::DstCast;
+
 use self::slice_dst_pointer::Inner;
 pub use self::{pointer_with::PointerWith, slice_dst_pointer::SliceDstPointer};
-use crate::DstCast;
 
 mod pointer_with;
 mod slice_dst_pointer;

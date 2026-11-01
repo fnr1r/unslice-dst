@@ -7,8 +7,9 @@ use core::{
     ptr::{NonNull, read},
 };
 
+use unslice_dst_cast::dst_cast_nonnull;
+
 use crate::{
-    cast::dst_cast_nonnull,
     uninit::UninitRef,
     utils::slice::{slice_as_uninit, slice_assume_init_mut},
 };

@@ -1,9 +1,8 @@
 use core::{mem::ManuallyDrop, ptr::NonNull};
 
-use crate::{
-    cast::dst_from_raw_parts_nonnull, container::DstContainer, layout::layout_for_len,
-    uninit::UninitMut,
-};
+use unslice_dst_cast::dst_from_raw_parts_nonnull;
+
+use crate::{container::DstContainer, layout::layout_for_len, uninit::UninitMut};
 
 #[inline]
 const unsafe fn unwrap_invariant<T>(value: Option<T>, s: &str) -> T {

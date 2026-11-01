@@ -1,8 +1,9 @@
 use core::{alloc::Layout, ptr::NonNull};
 
+use unslice_dst_cast::dst_from_raw_parts_nonnull;
+
 use crate::{
     SliceDst,
-    cast::dst_from_raw_parts_nonnull,
     layout::layout_for_len,
     utils::nalloc::{AllocFn, alloc_if_non_zero, nonnull_alloc},
 };

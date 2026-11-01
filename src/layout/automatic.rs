@@ -4,7 +4,7 @@
 
 use core::{alloc::Layout, ptr::null};
 
-use crate::{DstCast, cast::dst_from_raw_parts};
+use unslice_dst_cast::{DstCast, dst_from_raw_parts};
 
 const FAKE_ADDR: *const () = null();
 
