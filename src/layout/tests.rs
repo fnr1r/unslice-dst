@@ -1,8 +1,9 @@
 use core::alloc::Layout;
 
-use super::{DstLayout, layout_for_len};
 #[cfg(feature = "layout_automatic")]
-use crate::dst_cast_impl;
+use unslice_dst_cast::dst_cast_impl;
+
+use super::{DstLayout, layout_for_len};
 
 #[derive(Debug)]
 #[repr(C)]
